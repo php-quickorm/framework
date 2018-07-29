@@ -1,0 +1,19 @@
+{
+    "name": "zzfly256/orm",
+    "description": "a simple PHP ORM framework",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Rytia",
+            "email": "admin@zzfly.net"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Model\\": "App/Model/",
+            "Controller\\": "App/Controller/"
+        }
+    }
+}
