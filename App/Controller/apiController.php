@@ -3,6 +3,6 @@ namespace Controller;
 use Model\Demo;
 class apiController {
     public function test(){
-        Demo::find(5);
+        //Demo::find(5);
     }
 }

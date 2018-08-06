@@ -1,6 +1,6 @@
 {
-    "name": "zzfly256/orm",
-    "description": "a simple PHP ORM framework",
+    "name": "zzfly256/php-jsorm",
+    "description": "a simple PHP ORM framework to built up api server",
     "type": "library",
     "license": "MIT",
     "authors": [
