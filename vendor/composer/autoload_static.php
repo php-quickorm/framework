@@ -28,11 +28,18 @@ class ComposerStaticInit3dcce667708e66b2aabbed3c392db095
         ),
     );
 
+    public static $classMap = array (
+        'System\\Database' => __DIR__ . '/../..' . '/App/System/Database.php',
+        'System\\DatabaseDriver\\pdo_mysql' => __DIR__ . '/../..' . '/App/System/DatabaseDriver/pdo_mysql.php',
+        'System\\Model' => __DIR__ . '/../..' . '/App/System/Model.php',
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit3dcce667708e66b2aabbed3c392db095::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit3dcce667708e66b2aabbed3c392db095::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit3dcce667708e66b2aabbed3c392db095::$classMap;
 
         }, null, ClassLoader::class);
     }

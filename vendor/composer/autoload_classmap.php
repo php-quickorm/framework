@@ -6,4 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'System\\Database' => $baseDir . '/App/System/Database.php',
+    'System\\DatabaseDriver\\pdo_mysql' => $baseDir . '/App/System/DatabaseDriver/pdo_mysql.php',
+    'System\\Model' => $baseDir . '/App/System/Model.php',
 );

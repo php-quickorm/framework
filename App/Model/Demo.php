@@ -1,12 +1,12 @@
 <?php
 namespace Model;
-include 'BaseModel.php';
+use System\Model;
 
 /**
  * 测试模型
  */
-class Demo extends BaseModel
+class Demo extends Model
 {
     // 数据表名称
-	protected static $table = 'Demo';
+	public static $table = 'demo';
 }
