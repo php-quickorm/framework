@@ -3,8 +3,10 @@ namespace System\DatabaseDriver;
 
 class pdo_mysql {
 
-    public function connectDatabase($host, $database, $user, $password) {
+    public $connect;
 
+    public function initialConnect($host, $database, $user, $password) {
+        // 创建 pdo 链接
         $link = 'mysql:dbname='.$database.';host='.$host;
         try {
             $db = new \PDO($link, $user, $password);
@@ -16,6 +18,10 @@ class pdo_mysql {
         finally{
             return $db;
         }
+    }
+
+    public function __construct(){
+        $this->connect = self::initialConnect('127.0.0.1', 'orm', 'root', '');
     }
 
 }
