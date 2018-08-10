@@ -5,6 +5,9 @@ use Model\Demo;
 class apiController {
     public function test($id){
         // echo $_SERVER['REQUEST_METHOD'];
+        $test = Demo::find($id);
+        print_r($test);
+        echo $test->delete();
     }
 
     // 查询类方法演示
