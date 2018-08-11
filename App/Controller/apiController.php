@@ -1,13 +1,16 @@
 <?php
 namespace Controller;
 use Model\Demo;
+use System\Collection;
 
 class apiController {
+    /**
+     * @param $id
+     */
     public function test($id){
         // echo $_SERVER['REQUEST_METHOD'];
-        $test = Demo::find($id);
-        print_r($test);
-        echo $test->delete();
+        $test = new Collection([1,2,3,4,5]);
+
     }
 
     // 查询类方法演示

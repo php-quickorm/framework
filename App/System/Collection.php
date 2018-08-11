@@ -3,10 +3,9 @@ namespace System;
 
 use Countable;
 use ArrayAccess;
-use System\Interfaces\Jsonable;
-use Traversable;
 use ArrayIterator;
 use IteratorAggregate;
+use System\Interfaces\Jsonable;
 
 /**
  * PHP-JSORM 框架的数据集合类
@@ -37,33 +36,104 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
     // 栈与队列数据结构封装
 
-    public function push(){
-
+    /**
+     * 元素进栈
+     * @param mixed $value
+     * @return Collection
+     * @uses 将元素插入 Collection 尾部
+     */
+    public function push($value){
+        array_push($this->dataArray, $value);
+        return $this;
     }
 
+    /**
+     * 元素出栈
+     * @return Collection
+     * @uses 将 Collection 最后一个元素弹出
+     */
     public function pop(){
-
+        array_pop($this->dataArray);
+        return $this;
     }
 
+    /**
+     * 元素出队列
+     * @return Collection
+     * @uses 将 Collection 首个元素弹出
+     */
     public function shift(){
-
+        array_shift($this->dataArray);
+        return $this;
     }
 
-
-    public function sort(){
-
+    /**
+     * 元素插入至头部
+     * @param mixed $value
+     * @return Collection
+     * @uses 将元素插入 Collection 首个位置
+     */
+    public function unShift($value){
+        array_unshift($this->dataArray, $value);
+        return $this;
     }
 
-    public function merge(){
-
+    /**
+     * 集合合并
+     * @param Collection|array $array
+     * @return Collection
+     * @uses 将一个 Collection 或 Array 合并到当前实例
+     */
+    public function merge($array){
+        if( $array instanceof Collection){
+            $this->dataArray = array_merge($this->dataArray, $array->dataArray);
+        } else {
+            $this->dataArray = array_merge($this->dataArray, $array);
+        }
+        return $this;
     }
 
+    /**
+     * 获取集合元素个数
+     * @return int
+     */
     public function count() {
+        return count($this->dataArray);
+    }
 
+    /**
+     * 获取集合首个元素
+     * @return mixed
+     */
+    public function first(){
+        return $this->dataArray[0];
+    }
+
+    /**
+     * 获取集合最后一个元素
+     * @return mixed
+     */
+    public function last(){
+        return $this->dataArray[count($this->dataArray)-1];
     }
 
 
     // ORM 聚合方法
+
+    /**
+     * 元素排序
+     * @param string $sortFunction, callable $callback
+     * @return Collection
+     * @uses Collection 元素排序，默认为 asrot，若调用其余排序函数请传入参数 sortFunction
+     */
+    public function sort($sortFunction = "asort",$callback = null){
+        if (is_null($callback)) {
+            $sortFunction($this->dataArray);
+        } else {
+            $sortFunction($this->dataArray, $callback);
+        }
+        return $this;
+    }
 
     public function max() {
 
@@ -78,14 +148,6 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     }
 
     public function sum() {
-
-    }
-
-    public function first(){
-
-    }
-
-    public function last(){
 
     }
 
