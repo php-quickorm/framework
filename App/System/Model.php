@@ -3,7 +3,7 @@ namespace System;
 use System\Database;
 use System\Interfaces\Jsonable;
 /**
- * PHP-JSORM 框架的 Model 基本类
+ * PHP-Quick-ORM 框架的 Model 基本类
  * @author Rytia <rytia@outlook.com>
  * @copyright 2018 PHP-JSORM
  */

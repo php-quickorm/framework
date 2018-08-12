@@ -8,7 +8,7 @@ use IteratorAggregate;
 use System\Interfaces\Jsonable;
 
 /**
- * PHP-JSORM 框架的数据集合类
+ * PHP-Quick-ORM 框架的数据集合类
  * @author Rytia <rytia@outlook.com>
  * @copyright 2018 PHP-JSORM
  */
@@ -263,9 +263,13 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      * @return Collection
      * @uses Collection 元素排序，集合中的元素应为 Model 实例，且传入比较所依据的字段
      */
-    public function orderBy($field = null, $method = "ASC"){
+    public function sortBy($field = null, $method = "ASC"){
+        // 储存临时变量 $zZzfield，否则在 uasort() 函数内部无法访问；这个方法不太好，仍需优化
+        $dataTmp = $this->dataArray;
+        $this->dataArray[$this->count()] = $field;
         if (!is_null($field)) {
-            uasort($this->dataArray,function($x,$y){
+            uasort($dataTmp,function($x,$y){
+                $field = $this->dataArray[$this->count()-1];
                 if($x->$field > $y->$field){
                     return 1;
                 } elseif ($x->$field < $y->$field) {
@@ -275,8 +279,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
                 }
             });
         }
+        // 根据排序方式重新赋值
         if ($method == "DESC"){
-            $this->dataArray = array_reverse($this->dataArray);
+            $this->dataArray = array_reverse($dataTmp);
+        } else {
+            $this->dataArray = $dataTmp;
         }
         return $this;
     }
@@ -284,6 +291,15 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     public function paginate(){
 
     }
+
+    public function where(){
+
+    }
+
+    public function OrWhere(){
+
+    }
+
 
 
     // PHP ArrayAccess 接口支持

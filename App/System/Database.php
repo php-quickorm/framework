@@ -7,7 +7,7 @@ class Database{
     public $PDOConnect;
 
     /**
-     * PHP-JSORM 框架数据库基础类
+     * PHP-Quick-ORM 框架数据库基础类
      * @author Rytia <rytia@outlook.com>
      * @uses 用于驱动数据库，属于对 PHP PDO 的二次封装以满足快速操作，其中 PDO 对象保存在 $this->PDOConnect 中，PDOStatement 对象保存在 $this->PDOStatement 中
     */
