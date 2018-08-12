@@ -117,45 +117,168 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return $this->dataArray[count($this->dataArray)-1];
     }
 
+    /**
+     * 检测集合是否为空
+     * @return boolean
+     */
+    public function isEmpty(){
+        return empty($this->dataArray);
+    }
+
+    /**
+     * 检测元素是否在集合中或某集合是否为该集合的子集
+     * @param mixed $collection
+     * @return boolean
+     */
+    public function contains($collection){
+        if ( $collection instanceof Collection || is_array($collection)){
+            // 传入参数为 Collection 或 Array 的情况：逐个判断是否包含
+            foreach ($collection as $value){
+                if(!in_array($value,$this->dataArray)){
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            // 传入参数为 其他元素 的情况：直接判断
+            return in_array($collection, $this->dataArray);
+        }
+    }
+
 
     // ORM 聚合方法
 
     /**
-     * 元素排序
+     * 元素基础排序
      * @param string $sortFunction, callable $callback
      * @return Collection
-     * @uses Collection 元素排序，默认为 asrot，若调用其余排序函数请传入参数 sortFunction
+     * @uses Collection 元素排序，排序方法默认为 PHP 自带的 asrot (底层由变种的快排实现，时间复杂度为 o(NLogN))，若调用其余排序方法请传入参数 sortFunction
      */
-    public function sort($sortFunction = "asort",$callback = null){
+    public function sort($orderBy = "ASC", $sortFunction = "asort",$callback = null){
         if (is_null($callback)) {
             $sortFunction($this->dataArray);
         } else {
             $sortFunction($this->dataArray, $callback);
         }
+        if ($orderBy == "DESC"){
+            $this->dataArray = array_reverse($this->dataArray);
+        }
         return $this;
     }
 
-    public function max() {
-
+    /**
+     * 获取(某个字段)最大的元素
+     * @param string $field
+     * @return mixed
+     * @uses 用于获取(某个字段)最大的元素；若集合中的数据类型为 Model 实例，请传入比较所依据的字段
+     */
+    public function max($field = null) {
+        // 根据数据类型做出判断
+        if ( !is_null($field) && $this->dataArray[0] instanceof Model) {
+            // 如果是 Model 则做简单打擂比较(时间复杂度为 o(N))
+            // 有人阅读源码看到这里，请注意没有调用 $this->sort() 是为了减少时间复杂度和降低耦合度，下同
+            $target = 0;
+            $maxData = $this->dataArray[$target]->$field;
+            foreach ($this->dataArray as $key => $value) {
+                if ($value->$field > $maxData){
+                    $target = $key;
+                    $maxData = $this->dataArray[$target]->$field;
+                }
+            }
+            return $this->dataArray[$target];
+        } else {
+            // 如果是其他类型则调用 PHP 自带函数
+            return max($this->dataArray);
+        }
     }
 
-    public function min() {
-
+    /**
+     * 获取(某个字段)最小的元素
+     * @param string $field
+     * @return mixed
+     * @uses 用于获取(某个字段)最小的元素；若集合中的数据类型为 Model 实例，请传入比较所依据的字段
+     */
+    public function min($field = null) {
+        // 根据数据类型做出判断
+        if ( !is_null($field) && $this->dataArray[0] instanceof Model) {
+            // 如果是 Model 则做简单打擂比较(时间复杂度为 o(N))
+            $target = 0;
+            $maxData = $this->dataArray[$target]->$field;
+            foreach ($this->dataArray as $key => $value) {
+                if ($value->$field < $maxData){
+                    $target = $key;
+                    $maxData = $this->dataArray[$target]->$field;
+                }
+            }
+            return $this->dataArray[$target];
+        } else {
+            // 如果是其他类型则调用 PHP 自带函数
+            return min($this->dataArray);
+        }
     }
 
-    public function average() {
-
+    /**
+     * 获取元素(某个字段)算术平均值
+     * @param string $field
+     * @return int|float
+     * @uses 用于获取元素(某个字段)数值总和；若集合中的数据类型为 Model 实例，请传入比较所依据的字段
+     */
+    public function average($field = null) {
+        // 根据数据类型做出判断
+        if ( !is_null($field) && $this->dataArray[0] instanceof Model) {
+            // 如果是 Model 调用 $this->sum / $this->count()
+            return $this->sum($field) / $this->count();
+        } else {
+            // 如果是其他类型则调用 PHP 自带函数
+            return array_sum($this->dataArray)/count($this->dataArray);
+        }
     }
 
-    public function sum() {
-
+    /**
+     * 获取元素(某个字段)数值总和
+     * @param string $field
+     * @return int|float
+     * @uses 用于获取元素(某个字段)数值总和；若集合中的数据类型为 Model 实例，请传入比较所依据的字段
+     */
+    public function sum($field = null) {
+        // 根据数据类型做出判断
+        if ( !is_null($field) && $this->dataArray[0] instanceof Model) {
+            // 如果是 Model 则做简单累加(时间复杂度为 o(N))
+            $sum = 0;
+            foreach ($this->dataArray as $key => $value) {
+                $sum += $value->$field;
+            }
+            return $sum;
+        } else {
+            // 如果是其他类型则调用 PHP 自带函数
+            return array_sum($this->dataArray);
+        }
     }
 
 
-    // ORM 实用方法
-
-    public function orderBy(){
-
+    // TODO: ORM 实用方法
+    /**
+     * 依据字段排序元素
+     * @param string $field, string $orderBy
+     * @return Collection
+     * @uses Collection 元素排序，集合中的元素应为 Model 实例，且传入比较所依据的字段
+     */
+    public function orderBy($field = null, $method = "ASC"){
+        if (!is_null($field)) {
+            uasort($this->dataArray,function($x,$y){
+                if($x->$field > $y->$field){
+                    return 1;
+                } elseif ($x->$field < $y->$field) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            });
+        }
+        if ($method == "DESC"){
+            $this->dataArray = array_reverse($this->dataArray);
+        }
+        return $this;
     }
 
     public function paginate(){

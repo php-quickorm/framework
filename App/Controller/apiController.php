@@ -9,7 +9,8 @@ class apiController {
      */
     public function test($id){
         // echo $_SERVER['REQUEST_METHOD'];
-        $test = new Collection([1,2,3,4,5]);
+        $test = Demo::all();
+        var_dump($test->sortBy('id', 'DESC')->first());
 
     }
 
@@ -23,7 +24,7 @@ class apiController {
 
     public function where(){
         // 条件检索数据表(条件数组)
-        $conditionArray = ['author' => 'Rytia'];
+        $conditionArray = ["id" => "6"];
         $resultObjectArray = Demo::where($conditionArray);
         print_r($resultObjectArray);
     }

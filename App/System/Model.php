@@ -40,17 +40,24 @@ class Model implements Jsonable
      * @param array $sqlConditionArray
      * @return Collection
      */
-    public static function where($sqlConditionArray){
-		// SQL 语句拼接
-		foreach ($sqlConditionArray as $key => $value) {
-		    if (isset($sql)) {
-                $sql .= " AND ".$key.'="'.$value.'"';
-            } else {
-		        $sql = $key.'="'.$value.'"';
+    public static function where($sqlConditionArray = []){
+        // 判断 $sqlConditionArray 是否传入：加入空条件的判断使开发变得简便
+        if(empty($sqlConditionArray)){
+            // 未传入条件，显示全部数据
+            $sql = 'SELECT * FROM '.static::$table;
+        } else {
+            // 传入条件，进行 SQL 语句拼接
+            foreach ($sqlConditionArray as $key => $value) {
+                if (isset($sql)) {
+                    $sql .= " AND ".$key.'="'.$value.'"';
+                } else {
+                    $sql = $key.'="'.$value.'"';
+                }
             }
-		}
-		$sql = 'SELECT * FROM '.static::$table.' WHERE '.$sql;
+            $sql = 'SELECT * FROM '.static::$table.' WHERE '.$sql;
+        }
 
+        // 驱动数据库执行 SQL 语句
         $db = new Database();
         $db->prepare($sql);
         return static::makeCollection($db->fetchAll(), $sql);
@@ -62,7 +69,18 @@ class Model implements Jsonable
      * @return Collection
      */
     public static function whereRaw($sqlConditionStatement){
-        echo $sql = 'SELECT * FROM '.static::$table.' WHERE '.$sqlConditionStatement;
+        $sql = 'SELECT * FROM '.static::$table.' WHERE '.$sqlConditionStatement;
+        $db = new Database();
+        $db->prepare($sql);
+        return static::makeCollection($db->fetchAll(), $sql);
+    }
+
+    /**
+     * 显示全部数据
+     * @return Collection
+     */
+    public static function all(){
+        $sql = 'SELECT * FROM '.static::$table;
         $db = new Database();
         $db->prepare($sql);
         return static::makeCollection($db->fetchAll(), $sql);
@@ -92,6 +110,10 @@ class Model implements Jsonable
         return static::makeCollection($db->fetchAll(), $sql);
     }
 
+    /*
+     * 不知道有多少人会查阅我这个框架的源码，其实仔细看看我上面那几个查询的方法，你就会发现其实 find() 方法可以调用 where() 方法实现，where() 方法可以调用 whereRaw() 方法实现，whereRaw() 方法可以调用 raw() 方法实现，想要省代码的话可以省到极致，不过耦合度就要妥协了
+     * Rytia, 2018.08.12 凌晨
+     * */
 
     // ORM 修改更新
 
@@ -239,4 +261,6 @@ class Model implements Jsonable
     public function toJson($option = 0) {
         return json_encode($this->objectData, $option);
     }
+
+    // TODO: 没定义的静态函数全部调用 all() 并指向 Collection
 }
