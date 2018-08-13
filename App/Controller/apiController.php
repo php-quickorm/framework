@@ -9,9 +9,6 @@ class apiController {
      */
     public function test($id){
         // echo $_SERVER['REQUEST_METHOD'];
-        $test = Demo::all();
-        var_dump($test->sortBy('id', 'DESC'));
-
     }
 
     // 查询类方法演示

@@ -48,7 +48,7 @@ class Database{
      * 开始一个新的事务
      * @uses 用于 Model->update(), Model->delete(), Model->save() 等操作的准备工作
      */
-    public function transaction() {
+    public function beginTransaction() {
         $this->PDOConnect->beginTransaction();
     }
 

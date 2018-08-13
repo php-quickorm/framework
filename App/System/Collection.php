@@ -5,6 +5,7 @@ use Countable;
 use ArrayAccess;
 use ArrayIterator;
 use IteratorAggregate;
+use function MongoDB\BSON\toJSON;
 use System\Interfaces\Jsonable;
 
 /**
@@ -15,13 +16,17 @@ use System\Interfaces\Jsonable;
 
 class Collection implements ArrayAccess, Countable, IteratorAggregate
 {
+    protected $objectSQL;
+    protected $collectionItems = [];
 
-    public $dataArray = [];
+    // 为 Collection 分页方法提供支持
+    public $collectionPages;
 
     // 新建 Collection 方法
 
-    public function __construct($dataArray = []) {
-        $this->dataArray = $dataArray;
+    public function __construct($collectionItems = [], $sqlStatement = '') {
+        $this->collectionItems = $collectionItems;
+        $this->objectSQL = $sqlStatement;
     }
 
     /**
@@ -29,8 +34,8 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      * @return Collection
      * @uses 用于将 array 转换为 Collection 的静态方法，与构造方法一致。专为兼顾 Laravel 党的优雅而生！
      */
-    public static function make($dataArray = []){
-        return new static($dataArray);
+    public static function make($collectionItems = []){
+        return new static($collectionItems);
     }
 
 
@@ -43,7 +48,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      * @uses 将元素插入 Collection 尾部
      */
     public function push($value){
-        array_push($this->dataArray, $value);
+        array_push($this->collectionItems, $value);
         return $this;
     }
 
@@ -53,7 +58,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      * @uses 将 Collection 最后一个元素弹出
      */
     public function pop(){
-        array_pop($this->dataArray);
+        array_pop($this->collectionItems);
         return $this;
     }
 
@@ -63,7 +68,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      * @uses 将 Collection 首个元素弹出
      */
     public function shift(){
-        array_shift($this->dataArray);
+        array_shift($this->collectionItems);
         return $this;
     }
 
@@ -74,7 +79,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      * @uses 将元素插入 Collection 首个位置
      */
     public function unShift($value){
-        array_unshift($this->dataArray, $value);
+        array_unshift($this->collectionItems, $value);
         return $this;
     }
 
@@ -86,9 +91,9 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      */
     public function merge($array){
         if( $array instanceof Collection){
-            $this->dataArray = array_merge($this->dataArray, $array->dataArray);
+            $this->collectionItems = array_merge($this->collectionItems, $array->collectionItems);
         } else {
-            $this->dataArray = array_merge($this->dataArray, $array);
+            $this->collectionItems = array_merge($this->collectionItems, $array);
         }
         return $this;
     }
@@ -98,7 +103,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      * @return int
      */
     public function count() {
-        return count($this->dataArray);
+        return count($this->collectionItems);
     }
 
     /**
@@ -106,7 +111,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      * @return mixed
      */
     public function first(){
-        return $this->dataArray[0];
+        return $this->collectionItems[0];
     }
 
     /**
@@ -114,7 +119,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      * @return mixed
      */
     public function last(){
-        return $this->dataArray[count($this->dataArray)-1];
+        return $this->collectionItems[count($this->collectionItems)-1];
     }
 
     /**
@@ -122,7 +127,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      * @return boolean
      */
     public function isEmpty(){
-        return empty($this->dataArray);
+        return empty($this->collectionItems);
     }
 
     /**
@@ -134,14 +139,14 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         if ( $collection instanceof Collection || is_array($collection)){
             // 传入参数为 Collection 或 Array 的情况：逐个判断是否包含
             foreach ($collection as $value){
-                if(!in_array($value,$this->dataArray)){
+                if(!in_array($value,$this->collectionItems)){
                     return false;
                 }
             }
             return true;
         } else {
             // 传入参数为 其他元素 的情况：直接判断
-            return in_array($collection, $this->dataArray);
+            return in_array($collection, $this->collectionItems);
         }
     }
 
@@ -156,12 +161,12 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      */
     public function sort($orderBy = "ASC", $sortFunction = "asort",$callback = null){
         if (is_null($callback)) {
-            $sortFunction($this->dataArray);
+            $sortFunction($this->collectionItems);
         } else {
-            $sortFunction($this->dataArray, $callback);
+            $sortFunction($this->collectionItems, $callback);
         }
         if ($orderBy == "DESC"){
-            $this->dataArray = array_reverse($this->dataArray);
+            $this->collectionItems = array_reverse($this->collectionItems);
         }
         return $this;
     }
@@ -174,21 +179,21 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      */
     public function max($field = null) {
         // 根据数据类型做出判断
-        if ( !is_null($field) && $this->dataArray[0] instanceof Model) {
+        if ( !is_null($field) && $this->collectionItems[0] instanceof Model) {
             // 如果是 Model 则做简单打擂比较(时间复杂度为 o(N))
             // 有人阅读源码看到这里，请注意没有调用 $this->sort() 是为了减少时间复杂度和降低耦合度，下同
             $target = 0;
-            $maxData = $this->dataArray[$target]->$field;
-            foreach ($this->dataArray as $key => $value) {
+            $maxData = $this->collectionItems[$target]->$field;
+            foreach ($this->collectionItems as $key => $value) {
                 if ($value->$field > $maxData){
                     $target = $key;
-                    $maxData = $this->dataArray[$target]->$field;
+                    $maxData = $this->collectionItems[$target]->$field;
                 }
             }
-            return $this->dataArray[$target];
+            return $this->collectionItems[$target];
         } else {
             // 如果是其他类型则调用 PHP 自带函数
-            return max($this->dataArray);
+            return max($this->collectionItems);
         }
     }
 
@@ -200,20 +205,20 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      */
     public function min($field = null) {
         // 根据数据类型做出判断
-        if ( !is_null($field) && $this->dataArray[0] instanceof Model) {
+        if ( !is_null($field) && $this->collectionItems[0] instanceof Model) {
             // 如果是 Model 则做简单打擂比较(时间复杂度为 o(N))
             $target = 0;
-            $maxData = $this->dataArray[$target]->$field;
-            foreach ($this->dataArray as $key => $value) {
+            $maxData = $this->collectionItems[$target]->$field;
+            foreach ($this->collectionItems as $key => $value) {
                 if ($value->$field < $maxData){
                     $target = $key;
-                    $maxData = $this->dataArray[$target]->$field;
+                    $maxData = $this->collectionItems[$target]->$field;
                 }
             }
-            return $this->dataArray[$target];
+            return $this->collectionItems[$target];
         } else {
             // 如果是其他类型则调用 PHP 自带函数
-            return min($this->dataArray);
+            return min($this->collectionItems);
         }
     }
 
@@ -225,12 +230,12 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      */
     public function average($field = null) {
         // 根据数据类型做出判断
-        if ( !is_null($field) && $this->dataArray[0] instanceof Model) {
+        if ( !is_null($field) && $this->collectionItems[0] instanceof Model) {
             // 如果是 Model 调用 $this->sum / $this->count()
             return $this->sum($field) / $this->count();
         } else {
             // 如果是其他类型则调用 PHP 自带函数
-            return array_sum($this->dataArray)/count($this->dataArray);
+            return array_sum($this->collectionItems)/count($this->collectionItems);
         }
     }
 
@@ -242,16 +247,16 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      */
     public function sum($field = null) {
         // 根据数据类型做出判断
-        if ( !is_null($field) && $this->dataArray[0] instanceof Model) {
+        if ( !is_null($field) && $this->collectionItems[0] instanceof Model) {
             // 如果是 Model 则做简单累加(时间复杂度为 o(N))
             $sum = 0;
-            foreach ($this->dataArray as $key => $value) {
+            foreach ($this->collectionItems as $key => $value) {
                 $sum += $value->$field;
             }
             return $sum;
         } else {
             // 如果是其他类型则调用 PHP 自带函数
-            return array_sum($this->dataArray);
+            return array_sum($this->collectionItems);
         }
     }
 
@@ -264,12 +269,12 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      * @uses Collection 元素排序，集合中的元素应为 Model 实例，且传入比较所依据的字段
      */
     public function sortBy($field = null, $method = "ASC"){
-        // 储存临时变量 $zZzfield，否则在 uasort() 函数内部无法访问；这个方法不太好，仍需优化
-        $dataTmp = $this->dataArray;
-        $this->dataArray[$this->count()] = $field;
-        if (!is_null($field)) {
+        // 储存临时变量 $field，否则在 uasort() 函数内部无法访问；这个方法不太好，仍需优化
+        $dataTmp = $this->collectionItems;
+        $this->collectionItems[$this->count()] = $field;
+        if (!is_null($field) && is_object($this->collectionItems[0])) {
             uasort($dataTmp,function($x,$y){
-                $field = $this->dataArray[$this->count()-1];
+                $field = $this->collectionItems[$this->count()-1];
                 if($x->$field > $y->$field){
                     return 1;
                 } elseif ($x->$field < $y->$field) {
@@ -281,14 +286,45 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         }
         // 根据排序方式重新赋值
         if ($method == "DESC"){
-            $this->dataArray = array_reverse($dataTmp);
+            $this->collectionItems = array_reverse($dataTmp);
         } else {
-            $this->dataArray = $dataTmp;
+            $this->collectionItems = $dataTmp;
         }
         return $this;
     }
 
-    public function paginate(){
+    public function paginate($pageNum, $furtherPageInfo = true){
+        // 保存集合总大小
+        $total = $this->count();
+
+        // 获取当前页码
+        $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
+        $startAt = (($currentPage-1)*$pageNum);
+
+        if($this->collectionItems[0] instanceof Model) {
+            // 拼接 SQL 语句：select * from table limit start,pageNum
+            $sql = $this->objectSQL." LIMIT ".$startAt.",".$pageNum;;
+            $db = new Database();
+            $db->prepare($sql);
+
+            // 修改 Collection 数据内容
+            $this->collectionItems = $db->fetchAll();
+            $this->objectSQL = $sql;
+        } else {
+            // 使用 PHP 原生切片
+            $this->collectionItems = array_slice($this->collectionItems,$startAt,$pageNum);
+        }
+
+        if($furtherPageInfo){
+            // 添加分页的属性
+            $this->collectionPages = new \stdClass();
+            $this->collectionPages->currentPage = $currentPage;
+            $this->collectionPages->totalPages = $total;
+            $this->collectionPages->hasNext = (ceil($total / $pageNum) > $currentPage) ? "true" : "false";
+            $this->collectionPages->nextUrl =($this->collectionPages->hasNext == "true") ? parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH).'?page='.($currentPage+1) : NULL;
+        }
+
+        return $this;
 
     }
 
@@ -300,6 +336,9 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
     }
 
+    public function select(){
+
+    }
 
 
     // PHP ArrayAccess 接口支持
@@ -310,7 +349,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      * @return bool
      */
     public function offsetExists($key) {
-        return array_key_exists($key, $this->dataArray);
+        return array_key_exists($key, $this->collectionItems);
     }
 
     /**
@@ -320,7 +359,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      */
     public function offsetGet($key)
     {
-        return $this->dataArray[$key];
+        return $this->collectionItems[$key];
     }
 
     /**
@@ -331,9 +370,9 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     public function offsetSet($key, $value)
     {
         if (is_null($key)) {
-            $this->dataArray[] = $value;
+            $this->collectionItems[] = $value;
         } else {
-            $this->dataArray[$key] = $value;
+            $this->collectionItems[$key] = $value;
         }
     }
 
@@ -343,7 +382,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      */
     public function offsetUnset($key)
     {
-        unset($this->dataArray[$key]);
+        unset($this->collectionItems[$key]);
     }
 
     /**
@@ -352,7 +391,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      */
     public function getIterator()
     {
-        return new ArrayIterator($this->dataArray);
+        return new ArrayIterator($this->collectionItems);
     }
 
     /**
@@ -374,6 +413,6 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
             } else {
                 return $value;
             }
-        },$this->dataArray),$option);
+        },$this->collectionItems),$option);
     }
 }

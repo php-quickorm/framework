@@ -215,7 +215,7 @@ class Model implements Jsonable
                 array_push($objectArray,$model);
             }
         }
-        return Collection::make($objectArray);
+        return new Collection($objectArray,$sqlStatementCache);
     }
 
 
@@ -262,5 +262,5 @@ class Model implements Jsonable
         return json_encode($this->objectData, $option);
     }
 
-    // TODO: 没定义的静态函数全部调用 all() 并指向 Collection
+    // TODO: 没定义的静态函数全部调用 call() 并指向 Collection
 }
