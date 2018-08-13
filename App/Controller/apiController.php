@@ -9,6 +9,8 @@ class apiController {
      */
     public function test($id){
         // echo $_SERVER['REQUEST_METHOD'];
+        $test = Demo::all()->paginate(3);
+        print_r($test);
     }
 
     // 查询类方法演示
@@ -30,6 +32,12 @@ class apiController {
         // 条件检索数据表(SQL语句)
         $conditionStatement = 'author LIKE "Rytia"';
         $resultObjectArray = Demo::whereRaw($conditionStatement);
+        print_r($resultObjectArray);
+    }
+
+    public function all(){
+        // 显示全部数据
+        $resultObjectArray = Demo::all();
         print_r($resultObjectArray);
     }
 

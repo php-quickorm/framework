@@ -1,6 +1,6 @@
 <?php
 namespace System;
-use System\DatabaseDriver\pdo_mysql;
+use System\DatabaseDriver\pdo_sqlite;
 class Database{
 
     public $PDOStatement;
@@ -14,7 +14,7 @@ class Database{
 
     public function __construct() {
         // 使用 pdo 进行处理
-        $this->PDOConnect = (new pdo_mysql())->connect;
+        $this->PDOConnect = (new pdo_sqlite())->connect;
     }
 
     /**

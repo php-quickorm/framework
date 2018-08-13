@@ -319,8 +319,9 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
             // 添加分页的属性
             $this->collectionPages = new \stdClass();
             $this->collectionPages->currentPage = $currentPage;
-            $this->collectionPages->totalPages = $total;
-            $this->collectionPages->hasNext = (ceil($total / $pageNum) > $currentPage) ? "true" : "false";
+            $this->collectionPages->totalItems = $total;
+            $this->collectionPages->totalPages = ceil($total / $pageNum);
+            $this->collectionPages->hasNext = ($this->collectionPages->totalPages > $currentPage) ? "true" : "false";
             $this->collectionPages->nextUrl =($this->collectionPages->hasNext == "true") ? parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH).'?page='.($currentPage+1) : NULL;
         }
 
