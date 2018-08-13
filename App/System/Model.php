@@ -54,7 +54,7 @@ class Model implements Jsonable
                     $sql = $key.'="'.$value.'"';
                 }
             }
-            $sql = 'SELECT * FROM '.static::$table.' WHERE '.$sql;
+            $sql = 'SELECT * FROM '.static::$table.' WHERE ('.$sql.')';
         }
 
         // 驱动数据库执行 SQL 语句
@@ -68,8 +68,13 @@ class Model implements Jsonable
      * @param string $sqlConditionStatement
      * @return Collection
      */
-    public static function whereRaw($sqlConditionStatement){
-        $sql = 'SELECT * FROM '.static::$table.' WHERE '.$sqlConditionStatement;
+    public static function whereRaw($sqlConditionStatement = ''){
+        if(empty($sqlConditionStatement)){
+            // 未传入条件，显示全部数据
+            $sql = 'SELECT * FROM '.static::$table;
+        } else {
+            $sql = 'SELECT * FROM ' . static::$table . ' WHERE (' . $sqlConditionStatement . ')';
+        }
         $db = new Database();
         $db->prepare($sql);
         return static::makeCollection($db->fetchAll(), $sql);

@@ -261,7 +261,8 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     }
 
 
-    // TODO: ORM 实用方法
+    // ORM 实用方法
+
     /**
      * 依据字段排序元素
      * @param string $field, string $orderBy
@@ -293,6 +294,12 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         return $this;
     }
 
+    /**
+     * 集合分页输出
+     * @param int $pageNum, boolean $furtherPageInfo
+     * @return Collection
+     * @uses Collection 分页功能
+     */
     public function paginate($pageNum, $furtherPageInfo = true){
         // 保存集合总大小
         $total = $this->count();
@@ -326,18 +333,102 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         }
 
         return $this;
+    }
+
+
+    // TODO: ORM 数据库查询方法
+
+
+    public function select(){
 
     }
 
     public function where(){
+        // 判断 $sqlConditionArray 是否传入：加入空条件的判断使开发变得简便
+        if(empty($sqlConditionArray)){
+            // 未传入条件，SQL语句不做任何改动
+        } else {
+            // 传入条件，进行 SQL 语句拼接
+            foreach ($sqlConditionArray as $key => $value) {
+                if (isset($sql)) {
+                    $sql .= " AND ".$key.'="'.$value.'"';
+                } else {
+                    $sql = $key.'="'.$value.'"';
+                }
+            }
+            $this->objectSQL = $this->objectSQL.' AND ('.$sql.')';
+        }
 
+        $db = new Database();
+        $db->prepare($this->objectSQL);
+        $this->collectionItems = $db->fetchAll();
+        return $this;
     }
 
-    public function OrWhere(){
+    public function whereRaw(){
+        // 判断 $sqlConditionArray 是否传入：加入空条件的判断使开发变得简便
+        if(empty($sqlConditionStatement)){
+            // 未传入条件，SQL语句不做任何改动
+        } else {
+            // 传入条件，进行 SQL 语句拼接
+            $this->objectSQL = $this->objectSQL.' AND ('.$sqlConditionStatement.')';
+        }
 
+        $db = new Database();
+        $db->prepare($this->objectSQL);
+        $this->collectionItems = $db->fetchAll();
+        return $this;
     }
 
-    public function select(){
+    /**
+     * 通过数组条件检索数据表
+     * @param array $sqlConditionArray
+     * @return Collection
+     */
+    public function orWhere($sqlConditionArray){
+        // 判断 $sqlConditionArray 是否传入：加入空条件的判断使开发变得简便
+        if(empty($sqlConditionArray)){
+            // 未传入条件，SQL语句不做任何改动
+        } else {
+            // 传入条件，进行 SQL 语句拼接
+            foreach ($sqlConditionArray as $key => $value) {
+                if (isset($sql)) {
+                    $sql .= " AND ".$key.'="'.$value.'"';
+                } else {
+                    $sql = $key.'="'.$value.'"';
+                }
+            }
+            $this->objectSQL = $this->objectSQL.' OR ('.$sql.')';
+        }
+
+        $db = new Database();
+        $db->prepare($this->objectSQL);
+        $this->collectionItems = $db->fetchAll();
+        return $this;
+    }
+
+    /**
+     * 通过 SQL 语句条件检索数据表
+     * @param string $sqlConditionStatement
+     * @return Collection
+     */
+    public function orWhereRaw($sqlConditionStatement){
+        // 判断 $sqlConditionArray 是否传入：加入空条件的判断使开发变得简便
+        if(empty($sqlConditionStatement)){
+            // 未传入条件，SQL语句不做任何改动
+        } else {
+            // 传入条件，进行 SQL 语句拼接
+            $this->objectSQL = $this->objectSQL.' OR ('.$sqlConditionStatement.')';
+        }
+
+        $db = new Database();
+        $db->prepare($this->objectSQL);
+        $this->collectionItems = $db->fetchAll();
+        return $this;
+    }
+
+
+    public function update(){
 
     }
 

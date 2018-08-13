@@ -9,7 +9,7 @@ class apiController {
      */
     public function test($id){
         // echo $_SERVER['REQUEST_METHOD'];
-        $test = Demo::all()->paginate(3);
+        $test = Demo::where(['title' => '还是标题'])->orWhereRaw('1=1');
         print_r($test);
     }
 
@@ -53,4 +53,12 @@ class apiController {
         $resultObjectArray = Demo::search("title", "%测试%");
         print_r($resultObjectArray);
     }
+
+    public function orWhere($id){
+        // 多重条件检索数据表(条件数组)
+        // 支持 where、whereRaw、orWhere、orWhereRaw
+        $test = Demo::where(['title' => '还是标题'])->orWhere(['title' => '测试标题']);
+        print_r($test);
+    }
+
 }

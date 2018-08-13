@@ -4,20 +4,12 @@
     <bookmark url="file://$PROJECT_DIR$/App/System/Collection.php" line="250" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d14109e8-dd4c-4f2d-8db3-442e006f2a64" name="Default" comment="完成 Collection 分页">
-      <change afterPath="$PROJECT_DIR$/App/System/DatabaseDriver/pdo_sqlite.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/orm.sqlite3.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/ORM.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="d14109e8-dd4c-4f2d-8db3-442e006f2a64" name="Default" comment="新增 SQLite 驱动方式">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Controller/apiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Controller/apiController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/System/Collection.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/System/Collection.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/System/Database.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/System/Database.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_classmap.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_classmap.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_static.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_static.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/System/Model.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/System/Model.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -66,17 +58,17 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="gitignore" value="1" />
+          <entry key="gitignore" value="2" />
           <entry key="json" value="6" />
-          <entry key="php" value="286" />
+          <entry key="php" value="288" />
           <entry key="sql" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="JSON" value="6" />
-          <entry key="PHP" value="286" />
-          <entry key="PLAIN_TEXT" value="1" />
+          <entry key="PHP" value="288" />
+          <entry key="PLAIN_TEXT" value="2" />
           <entry key="Scratch" value="2" />
         </counts>
       </usages-collector>
@@ -84,16 +76,16 @@
         <counts>
           <entry key="dummy" value="27" />
           <entry key="json" value="54" />
-          <entry key="php" value="13375" />
+          <entry key="php" value="13927" />
           <entry key="sql" value="7" />
-          <entry key="txt" value="160" />
+          <entry key="txt" value="186" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JSON" value="54" />
-          <entry key="PHP" value="13375" />
-          <entry key="PLAIN_TEXT" value="187" />
+          <entry key="PHP" value="13927" />
+          <entry key="PLAIN_TEXT" value="213" />
           <entry key="Scratch" value="7" />
         </counts>
       </usages-collector>
@@ -107,13 +99,13 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/App/System/Database.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-572">
-              <caret line="2" column="37" selection-start-line="2" selection-start-column="37" selection-end-line="2" selection-end-column="37" />
+            <state relative-caret-position="-130">
+              <caret line="2" column="36" selection-start-line="2" selection-start-column="36" selection-end-line="2" selection-end-column="36" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/App/System/DatabaseDriver/pdo_sqlite.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="598">
@@ -123,10 +115,27 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/App/System/Model.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="310">
+              <caret line="71" column="17" lean-forward="true" selection-start-line="71" selection-start-column="17" selection-end-line="71" selection-end-column="17" />
+              <folding>
+                <element signature="e#24#44#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/App/Controller/apiController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="312">
-              <caret line="12" column="21" selection-start-line="12" selection-start-column="21" selection-end-line="12" selection-end-column="21" />
+            <state relative-caret-position="1352">
+              <caret line="58" column="47" selection-start-line="58" selection-start-column="47" selection-end-line="58" selection-end-column="47" />
               <folding>
                 <element signature="e#28#43#0#PHP" expanded="true" />
               </folding>
@@ -134,11 +143,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/App/System/Collection.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="572">
-              <caret line="323" column="81" selection-start-line="323" selection-start-column="81" selection-end-line="323" selection-end-column="81" />
+            <state relative-caret-position="2066">
+              <caret line="437" column="7" lean-forward="true" selection-start-line="437" selection-start-column="7" selection-end-line="437" selection-end-column="7" />
               <folding>
                 <element signature="e#25#39#0#PHP" expanded="true" />
               </folding>
@@ -149,8 +158,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/App/System/DatabaseDriver/pdo_mysql.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="702">
-              <caret line="27" selection-end-line="27" />
+            <state relative-caret-position="234">
+              <caret line="9" column="57" lean-forward="true" selection-start-line="9" selection-start-column="57" selection-end-line="9" selection-end-column="57" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/App/System/Interfaces/Jsonable.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="286">
+              <caret line="11" column="1" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -165,6 +183,7 @@
       <find>constructCollection</find>
       <find>sort</find>
       <find>dataArray</find>
+      <find>update</find>
     </findStrings>
     <replaceStrings>
       <replace>self::$</replace>
@@ -197,12 +216,12 @@
         <option value="$PROJECT_DIR$/Public/index.php" />
         <option value="$PROJECT_DIR$/composer.json" />
         <option value="$PROJECT_DIR$/index.php" />
-        <option value="$PROJECT_DIR$/App/System/Model.php" />
         <option value="$PROJECT_DIR$/App/System/DatabaseDriver/pdo_sqlite.php" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/1e030114-0e61-4e67-a41b-dc37d6426954/console.sql" />
+        <option value="$PROJECT_DIR$/App/System/Database.php" />
+        <option value="$PROJECT_DIR$/App/System/Model.php" />
         <option value="$PROJECT_DIR$/App/Controller/apiController.php" />
         <option value="$PROJECT_DIR$/App/System/Collection.php" />
-        <option value="$PROJECT_DIR$/App/System/Database.php" />
       </list>
     </option>
   </component>
@@ -262,42 +281,14 @@
             </path>
             <path>
               <item name="ORM" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="bcb0276e:PhpExternalLibrariesNodePatcher$PatchedExternalLibrariesNode" />
-            </path>
-            <path>
-              <item name="ORM" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="bcb0276e:PhpExternalLibrariesNodePatcher$PatchedExternalLibrariesNode" />
-              <item name="PHP" type="5114b859:PhpExternalLibrariesNodePatcher$PatchedLibraryNode" />
-            </path>
-            <path>
-              <item name="ORM" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="bcb0276e:PhpExternalLibrariesNodePatcher$PatchedExternalLibrariesNode" />
-              <item name="PHP" type="5114b859:PhpExternalLibrariesNodePatcher$PatchedLibraryNode" />
-              <item name="ORM" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ORM" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="bcb0276e:PhpExternalLibrariesNodePatcher$PatchedExternalLibrariesNode" />
-              <item name="PHP" type="5114b859:PhpExternalLibrariesNodePatcher$PatchedLibraryNode" />
-              <item name="ORM" type="462c0819:PsiDirectoryNode" />
-              <item name="App" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ORM" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="bcb0276e:PhpExternalLibrariesNodePatcher$PatchedExternalLibrariesNode" />
-              <item name="PHP" type="5114b859:PhpExternalLibrariesNodePatcher$PatchedLibraryNode" />
               <item name="ORM" type="462c0819:PsiDirectoryNode" />
               <item name="App" type="462c0819:PsiDirectoryNode" />
               <item name="System" type="462c0819:PsiDirectoryNode" />
+              <item name="Interfaces" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ORM" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="bcb0276e:PhpExternalLibrariesNodePatcher$PatchedExternalLibrariesNode" />
-              <item name="PHP" type="5114b859:PhpExternalLibrariesNodePatcher$PatchedLibraryNode" />
-              <item name="ORM" type="462c0819:PsiDirectoryNode" />
-              <item name="App" type="462c0819:PsiDirectoryNode" />
-              <item name="System" type="462c0819:PsiDirectoryNode" />
-              <item name="DatabaseDriver" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -368,7 +359,7 @@
       <workItem from="1533887921783" duration="12880000" />
       <workItem from="1533974140493" duration="10369000" />
       <workItem from="1534052135380" duration="22195000" />
-      <workItem from="1534144199320" duration="3156000" />
+      <workItem from="1534144199320" duration="10212000" />
     </task>
     <task id="LOCAL-00001" summary="完善 多级路由">
       <created>1533568404426</created>
@@ -433,11 +424,18 @@
       <option name="project" value="LOCAL" />
       <updated>1534144254533</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="新增 SQLite 驱动方式">
+      <created>1534149870797</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1534149870797</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="108199000" />
+    <option name="totallyTimeSpent" value="115255000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -489,7 +487,8 @@
     <MESSAGE value="完善 Collection ORM 相关" />
     <MESSAGE value="更改项目名 PHP-Quick-ORM" />
     <MESSAGE value="完成 Collection 分页" />
-    <option name="LAST_COMMIT_MESSAGE" value="完成 Collection 分页" />
+    <MESSAGE value="新增 SQLite 驱动方式" />
+    <option name="LAST_COMMIT_MESSAGE" value="新增 SQLite 驱动方式" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/vendor/autoload.php">
@@ -502,23 +501,10 @@
     <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/stubs/dom/dom.php">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/App/Model/Demo.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="286">
           <caret line="11" column="1" selection-start-line="11" selection-end-line="11" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/System/Model.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6838">
-          <caret line="264" column="27" selection-start-line="264" selection-start-column="27" selection-end-line="264" selection-end-column="27" />
-          <folding>
-            <element signature="e#24#44#0#PHP" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -546,6 +532,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/App/System/DatabaseDriver/pdo_sqlite.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="598">
+          <caret line="23" column="61" selection-start-line="23" selection-start-column="61" selection-end-line="23" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/App/System/Interfaces/Jsonable.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="286">
@@ -553,10 +549,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/App/System/DatabaseDriver/pdo_mysql.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="9" column="57" lean-forward="true" selection-start-line="9" selection-start-column="57" selection-end-line="9" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/System/Database.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-130">
+          <caret line="2" column="36" selection-start-line="2" selection-start-column="36" selection-end-line="2" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/System/Model.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="310">
+          <caret line="71" column="17" lean-forward="true" selection-start-line="71" selection-start-column="17" selection-end-line="71" selection-end-column="17" />
+          <folding>
+            <element signature="e#24#44#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/App/Controller/apiController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="12" column="21" selection-start-line="12" selection-start-column="21" selection-end-line="12" selection-end-column="21" />
+        <state relative-caret-position="1352">
+          <caret line="58" column="47" selection-start-line="58" selection-start-column="47" selection-end-line="58" selection-end-column="47" />
           <folding>
             <element signature="e#28#43#0#PHP" expanded="true" />
           </folding>
@@ -565,32 +585,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/App/System/Collection.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="572">
-          <caret line="323" column="81" selection-start-line="323" selection-start-column="81" selection-end-line="323" selection-end-column="81" />
+        <state relative-caret-position="2066">
+          <caret line="437" column="7" lean-forward="true" selection-start-line="437" selection-start-column="7" selection-end-line="437" selection-end-column="7" />
           <folding>
             <element signature="e#25#39#0#PHP" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/System/Database.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-572">
-          <caret line="2" column="37" selection-start-line="2" selection-start-column="37" selection-end-line="2" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/System/DatabaseDriver/pdo_mysql.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="702">
-          <caret line="27" selection-end-line="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/System/DatabaseDriver/pdo_sqlite.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="598">
-          <caret line="23" column="61" selection-start-line="23" selection-start-column="61" selection-end-line="23" selection-end-column="61" />
         </state>
       </provider>
     </entry>
