@@ -5,28 +5,25 @@ use Countable;
 use ArrayAccess;
 use ArrayIterator;
 use IteratorAggregate;
-use function MongoDB\BSON\toJSON;
 use System\Interfaces\Jsonable;
 
 /**
- * PHP-Quick-ORM 框架的数据集合类
+ * PHP-QuickORM 框架的数据集合类
  * @author Rytia <rytia@outlook.com>
  * @copyright 2018 PHP-JSORM
  */
 
 class Collection implements ArrayAccess, Countable, IteratorAggregate
 {
-    protected $objectSQL;
+
     protected $collectionItems = [];
 
     // 为 Collection 分页方法提供支持
     public $collectionPages;
 
     // 新建 Collection 方法
-
-    public function __construct($collectionItems = [], $sqlStatement = '') {
+    public function __construct($collectionItems = []) {
         $this->collectionItems = $collectionItems;
-        $this->objectSQL = $sqlStatement;
     }
 
     /**
@@ -264,6 +261,25 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     // ORM 实用方法
 
     /**
+     * 将集合中的关联数组转换为实例数组
+     * @param model $modelClass, string $sqlStatementCache
+     * @return Collection
+     * @uses 在新建或调用多条记录时可通过此类创建实例数组
+     */
+    public function format($modelClass, $sqlStatementCache = '') {
+        $objectArray = [];
+        // 构建实例数组
+        foreach($this->collectionItems as $key => $value) {
+            $model = new $modelClass($value,$sqlStatementCache);
+            if (!is_null($model)) {
+                array_push($objectArray,$model);
+            }
+        }
+        return new Collection($objectArray,$sqlStatementCache);
+    }
+
+
+    /**
      * 依据字段排序元素
      * @param string $field, string $orderBy
      * @return Collection
@@ -303,24 +319,22 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     public function paginate($pageNum, $furtherPageInfo = true){
         // 保存集合总大小
         $total = $this->count();
-
         // 获取当前页码
         $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
         $startAt = (($currentPage-1)*$pageNum);
+        // 使用 PHP 原生切片
+        $this->collectionItems = array_slice($this->collectionItems,$startAt,$pageNum);
+        // 调用分页构造方法
+        return $this->forPage($pageNum, $currentPage, $total, $furtherPageInfo);
+    }
 
-        if($this->collectionItems[0] instanceof Model) {
-            // 拼接 SQL 语句：select * from table limit start,pageNum
-            $sql = $this->objectSQL." LIMIT ".$startAt.",".$pageNum;;
-            $db = new Database();
-            $db->prepare($sql);
-
-            // 修改 Collection 数据内容
-            $this->collectionItems = $db->fetchAll();
-            $this->objectSQL = $sql;
-        } else {
-            // 使用 PHP 原生切片
-            $this->collectionItems = array_slice($this->collectionItems,$startAt,$pageNum);
-        }
+    /**
+     * 集合分页构造
+     * @param int $pageNum, int $currentPage, int $total， boolean $furtherPageInfo
+     * @return Collection
+     * @uses Collection 分页功能
+     */
+    public function forPage($pageNum, $currentPage, $total, $furtherPageInfo = true){
 
         if($furtherPageInfo){
             // 添加分页的属性
@@ -333,103 +347,6 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         }
 
         return $this;
-    }
-
-
-    // TODO: ORM 数据库查询方法
-
-
-    public function select(){
-
-    }
-
-    public function where(){
-        // 判断 $sqlConditionArray 是否传入：加入空条件的判断使开发变得简便
-        if(empty($sqlConditionArray)){
-            // 未传入条件，SQL语句不做任何改动
-        } else {
-            // 传入条件，进行 SQL 语句拼接
-            foreach ($sqlConditionArray as $key => $value) {
-                if (isset($sql)) {
-                    $sql .= " AND ".$key.'="'.$value.'"';
-                } else {
-                    $sql = $key.'="'.$value.'"';
-                }
-            }
-            $this->objectSQL = $this->objectSQL.' AND ('.$sql.')';
-        }
-
-        $db = new Database();
-        $db->prepare($this->objectSQL);
-        $this->collectionItems = $db->fetchAll();
-        return $this;
-    }
-
-    public function whereRaw(){
-        // 判断 $sqlConditionArray 是否传入：加入空条件的判断使开发变得简便
-        if(empty($sqlConditionStatement)){
-            // 未传入条件，SQL语句不做任何改动
-        } else {
-            // 传入条件，进行 SQL 语句拼接
-            $this->objectSQL = $this->objectSQL.' AND ('.$sqlConditionStatement.')';
-        }
-
-        $db = new Database();
-        $db->prepare($this->objectSQL);
-        $this->collectionItems = $db->fetchAll();
-        return $this;
-    }
-
-    /**
-     * 通过数组条件检索数据表
-     * @param array $sqlConditionArray
-     * @return Collection
-     */
-    public function orWhere($sqlConditionArray){
-        // 判断 $sqlConditionArray 是否传入：加入空条件的判断使开发变得简便
-        if(empty($sqlConditionArray)){
-            // 未传入条件，SQL语句不做任何改动
-        } else {
-            // 传入条件，进行 SQL 语句拼接
-            foreach ($sqlConditionArray as $key => $value) {
-                if (isset($sql)) {
-                    $sql .= " AND ".$key.'="'.$value.'"';
-                } else {
-                    $sql = $key.'="'.$value.'"';
-                }
-            }
-            $this->objectSQL = $this->objectSQL.' OR ('.$sql.')';
-        }
-
-        $db = new Database();
-        $db->prepare($this->objectSQL);
-        $this->collectionItems = $db->fetchAll();
-        return $this;
-    }
-
-    /**
-     * 通过 SQL 语句条件检索数据表
-     * @param string $sqlConditionStatement
-     * @return Collection
-     */
-    public function orWhereRaw($sqlConditionStatement){
-        // 判断 $sqlConditionArray 是否传入：加入空条件的判断使开发变得简便
-        if(empty($sqlConditionStatement)){
-            // 未传入条件，SQL语句不做任何改动
-        } else {
-            // 传入条件，进行 SQL 语句拼接
-            $this->objectSQL = $this->objectSQL.' OR ('.$sqlConditionStatement.')';
-        }
-
-        $db = new Database();
-        $db->prepare($this->objectSQL);
-        $this->collectionItems = $db->fetchAll();
-        return $this;
-    }
-
-
-    public function update(){
-
     }
 
 

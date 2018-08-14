@@ -2,7 +2,7 @@
 require __DIR__.'/vendor/autoload.php';
 
 /**
- * PHP-Quick-ORM
+ * PHP-QuickORM
  *
  * @description: a simple PHP ORM framework to built up api server
  * @author: Rytia

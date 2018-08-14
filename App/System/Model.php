@@ -3,7 +3,7 @@ namespace System;
 use System\Database;
 use System\Interfaces\Jsonable;
 /**
- * PHP-Quick-ORM 框架的 Model 基本类
+ * PHP-QuickORM 框架的 Model 基本类
  * @author Rytia <rytia@outlook.com>
  * @copyright 2018 PHP-JSORM
  */
@@ -11,11 +11,17 @@ use System\Interfaces\Jsonable;
 class Model implements Jsonable
 {
 	protected static $table = '';
-	protected $objectSQL;
 	protected $objectData = [];
 
 
-	// ORM 查询部分
+	// ORM 静态查询部分
+    // 实际上是对 Database 的封装，方便程序员开发
+
+    // 数据库层方法：select()、where()、whereRaw()、orWhere()、orWhereRaw() 返回 Database 对象
+    // 数据库层方法：paginate() 返回 Collection 对象
+    // 模型层方法：find() 返回 Model 对象
+    // 模型层方法：search()、all() 返回 Collection 对象
+
 
 	/**
      * 通过 id 查询数据表
@@ -23,61 +29,8 @@ class Model implements Jsonable
      * @return Model
      */
 	public static function find($id){
-        $sql = "SELECT * FROM ".static::$table." WHERE id=?";
-        $db = new Database();
-        $db->prepare($sql,[$id]);
-        // 根据数据库返回的数据集创建实例, 此时需要判断是否为空并返回 null，否则空实例会导致框架使用起来很不顺手..
-        $result = $db->fetch();
-        if (empty($result)) {
-            return null;
-        } else {
-            return new static($result, $sql);
-        }
-    }
-
-    /**
-     * 通过数组条件检索数据表
-     * @param array $sqlConditionArray
-     * @return Collection
-     */
-    public static function where($sqlConditionArray = []){
-        // 判断 $sqlConditionArray 是否传入：加入空条件的判断使开发变得简便
-        if(empty($sqlConditionArray)){
-            // 未传入条件，显示全部数据
-            $sql = 'SELECT * FROM '.static::$table;
-        } else {
-            // 传入条件，进行 SQL 语句拼接
-            foreach ($sqlConditionArray as $key => $value) {
-                if (isset($sql)) {
-                    $sql .= " AND ".$key.'="'.$value.'"';
-                } else {
-                    $sql = $key.'="'.$value.'"';
-                }
-            }
-            $sql = 'SELECT * FROM '.static::$table.' WHERE ('.$sql.')';
-        }
-
-        // 驱动数据库执行 SQL 语句
-        $db = new Database();
-        $db->prepare($sql);
-        return static::makeCollection($db->fetchAll(), $sql);
-	}
-
-    /**
-     * 通过 SQL 语句条件检索数据表
-     * @param string $sqlConditionStatement
-     * @return Collection
-     */
-    public static function whereRaw($sqlConditionStatement = ''){
-        if(empty($sqlConditionStatement)){
-            // 未传入条件，显示全部数据
-            $sql = 'SELECT * FROM '.static::$table;
-        } else {
-            $sql = 'SELECT * FROM ' . static::$table . ' WHERE (' . $sqlConditionStatement . ')';
-        }
-        $db = new Database();
-        $db->prepare($sql);
-        return static::makeCollection($db->fetchAll(), $sql);
+        $db = new Database(static::$table);
+        return new static($db->where([ 'id' => $id])->fetch());
     }
 
     /**
@@ -85,22 +38,8 @@ class Model implements Jsonable
      * @return Collection
      */
     public static function all(){
-        $sql = 'SELECT * FROM '.static::$table;
-        $db = new Database();
-        $db->prepare($sql);
-        return static::makeCollection($db->fetchAll(), $sql);
-    }
-
-    /**
-     * 执行 SQL 语句
-     * @param string $sqlStatement
-     * @return Collection
-     */
-    public static function raw($sqlStatement){
-        $sql = str_replace("{table}",static::$table,$sqlStatement);
-        $db = new Database();
-        $db->prepare($sql);
-        return static::makeCollection($db->fetchAll(), $sql);
+        $db = new Database(static::$table);
+        return Collection::make($db->where()->fetchAll())->format(static::class);
     }
 
     /**
@@ -109,18 +48,48 @@ class Model implements Jsonable
      * @return Collection
      */
     public static function search($field,$string){
-        $sql = 'SELECT * FROM '.static::$table.' WHERE '.$field.' LIKE "'.$string.'"';
-        $db = new Database();
-        $db->prepare($sql);
-        return static::makeCollection($db->fetchAll(), $sql);
+        $db = new Database(static::$table);
+        return Collection::make($db->whereRaw($field.' LIKE "'.$string.'"')->fetchAll())->format(static::class);
     }
 
+    /**
+     * 通过数组条件检索数据表
+     * @param array $sqlConditionArray
+     * @return Database
+     */
+    public static function where($sqlConditionArray = []){
+        $db = new Database(static::$table);
+        return $db->where($sqlConditionArray);
+	}
+
+    /**
+     * 通过 SQL 语句条件检索数据表
+     * @param string $sqlConditionStatement
+     * @return Database
+     */
+    public static function whereRaw($sqlConditionStatement = ''){
+        $db = new Database(static::$table);
+        return $db->whereRaw($sqlConditionStatement);
+    }
+
+    /**
+     * 执行 SQL 语句
+     * @param string $sqlStatement
+     * @return Database
+     */
+    public static function raw($sqlStatement){
+        $sql = str_replace("{table}",static::$table,$sqlStatement);
+        $db = new Database(static::$table);
+        return $db->query($sql);
+    }
+
+
     /*
-     * 不知道有多少人会查阅我这个框架的源码，其实仔细看看我上面那几个查询的方法，你就会发现其实 find() 方法可以调用 where() 方法实现，where() 方法可以调用 whereRaw() 方法实现，whereRaw() 方法可以调用 raw() 方法实现，想要省代码的话可以省到极致，不过耦合度就要妥协了
+     * 不知道有多少人会查阅我这个框架的源码，其实仔细看看我上面那几个查询的方法，你就会发现其实 find() 方法可以调用 where() 方法实现，where() 方法可以调用 whereRaw() 方法实现，whereRaw() 方法可以调用 raw() 方法实现，想要省代码的话可以省到极致，不过耦合度就要妥协了。具体的实现方法，请翻阅 Database 类的源码
      * Rytia, 2018.08.12 凌晨
      * */
 
-    // ORM 修改更新
+    // TODO: ORM 修改更新
 
     /**
      * 保存当前操作的实例
@@ -154,7 +123,7 @@ class Model implements Jsonable
         }
 
         // 执行语句，更新数据库
-        $db = new Database();
+        $db = new Database(static::$table);
         return $db->prepare($sql,array_values($objectData));
     }
 
@@ -170,7 +139,7 @@ class Model implements Jsonable
 
     public function delete(){
         $sql = 'DELETE FROM '.static::$table.' WHERE id=?';
-        $db = new Database();
+        $db = new Database(static::$table);
         return $db->prepare($sql,[$this->id]);
     }
 
@@ -181,11 +150,11 @@ class Model implements Jsonable
      * @return Model
      * @uses 在新建时可通过此类创建实例
      */
-    public static function create($array = [], $sqlStatementCache = '') {
+    public static function create($array = []) {
         if (empty($array)) {
             return null;
         } else {
-            $model = new static($array,$sqlStatementCache);
+            $model = new static($array);
             if($model->save()){
                 return $model;
             }
@@ -197,30 +166,21 @@ class Model implements Jsonable
 
     /**
      * 通过关联数组创建实例并保存
-     * @param array $objectData, string $sqlStatementCache
+     * @param array $objectData
      * @uses 在新建或调用一条记录时可通过此类创建实例
      */
-    public function __construct($objectData = [], $sqlStatementCache = '') {
+    public function __construct($objectData = []) {
         $this->objectData = $objectData;
-        $this->objectSQL = $sqlStatementCache;
     }
 
     /**
      * 通过二维数组创建实例数组
-     * @param array $array, string $sqlStatementCache
+     * @param array $array
      * @return Collection
      * @uses 在新建或调用多条记录时可通过此类创建实例数组
      */
-    public static function makeCollection($array = [], $sqlStatementCache = '') {
-        $objectArray = [];
-        // 构建实例数组
-        foreach($array as $key => $value) {
-            $model = new static($value,$sqlStatementCache);
-            if (!is_null($model)) {
-                array_push($objectArray,$model);
-            }
-        }
-        return new Collection($objectArray,$sqlStatementCache);
+    public static function makeCollection($array = []) {
+        return Collection::make($array)->format(static::class);
     }
 
 
@@ -250,6 +210,11 @@ class Model implements Jsonable
         unset($this->objectData[$name]);
     }
 
+    public function __call($name, $arguments) {
+        $db = new database(static::$table);
+        $db->$name($arguments);
+    }
+
 
     /**
      * 将实例转换为字符串
@@ -267,5 +232,4 @@ class Model implements Jsonable
         return json_encode($this->objectData, $option);
     }
 
-    // TODO: 没定义的静态函数全部调用 call() 并指向 Collection
 }
