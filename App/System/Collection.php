@@ -424,4 +424,9 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
             }
         },$this->collectionItems),$option);
     }
+
+    // TODO: toArray()
+    public function toArray(){
+        
+    }
 }

@@ -69,7 +69,7 @@ class Database{
             echo 'Database Class Failed: ' . $e->getMessage();
         }
         // 修改当前实例的数据表和 Model
-        $this->table = $reflect->getProperty("table");
+        $this->table = $reflect->getStaticPropertyValue("table");
         $this->model = $modelClass;
         return $this;
     }
@@ -95,8 +95,8 @@ class Database{
      * @param string $sqlStatement
      * @return Database
      */
-    public function query($sqlStatement){
-        $this->prepare($sqlStatement);
+    public function query($sqlStatement, $parameters = []){
+        $this->prepare($sqlStatement, $parameters);
         return $this;
     }
 
@@ -146,7 +146,7 @@ class Database{
      * @param array $sqlConditionArray
      * @return Database
      */
-    public function where($sqlConditionArray = ''){
+    public function where($sqlConditionArray = []){
         // 判断是否第一次执行
         if(empty($this->SQLStatement)) {
             // 判断 $sqlConditionArray 是否传入：加入空条件的判断使开发变得简便
@@ -256,11 +256,67 @@ class Database{
         return $this;
     }
 
-    // TODO: 数据表更新
-    public function update(){
 
+
+    /**
+     * 插入条目
+     * @param array $data
+     * @return boolean
+     */
+    public function insert($data){
+        // 生成 count($data) 个 ?, 作为 SQL 语句 VALUES 占位符
+        $sqlPlaceholder = "?";
+        for ($i = 1; $i<count($data); $i++) {
+            $sqlPlaceholder .= ',?';
+        }
+        // 执行语句进行插入
+        $this->SQLStatement = 'INSERT INTO '.$this->table.' ('.implode(',',array_keys($data)).') VALUES ('.$sqlPlaceholder.')';
+
+        return $this->prepare($this->SQLStatement,array_values($data));
     }
 
+    /**
+     * 更新条目
+     * @param array $data
+     * @return boolean
+     */
+    public function update($data){
+        // 框架设计之初，没有考虑过单独保存每次 where、select、join 等的值；因此每次做 UPDATE 等操作时，必须重新抽离出 where，是经验不足导致设计时的缺陷，这个问题将会在下一个大版本中得到解决。
+        // 下面 paginate() 方法使用了 explode 原因相同
+        $rawWhereSQL = explode(" ", $this->SQLStatement);
+        $where = implode("",array_slice($rawWhereSQL,5,count($rawWhereSQL)-5));
+
+        foreach ($data as $key => $value) {
+            if (isset($sql)) {
+                $sql .= " , ".$key.'=?';
+            } else {
+                $sql = $key.'=?';
+            }
+        }
+        $this->SQLStatement = 'UPDATE '.$this->table.' SET '.$sql.' WHERE '.$where;
+        return $this->prepare($this->SQLStatement,array_values($data));
+    }
+
+    /**
+     * 删除条目
+     * @return boolean
+     * @uses 用于更新当前操作的实例信息到数据库，
+     */
+    public function delete(){
+        // 无奈拼接 where
+        $rawWhereSQL = explode(" ", $this->SQLStatement);
+        $where = implode("",array_slice($rawWhereSQL,5,count($rawWhereSQL)-5));
+        // 执行 SQL 语句删除条目
+        $this->SQLStatement = 'DELETE FROM '.$this->table.' WHERE '.$where;
+        return $this->prepare($this->SQLStatement);
+    }
+
+    /**
+     * Database 分页
+     * @param int $pageNum, boolean $furtherPageInfo
+     * @return Collection
+     * @uses 数据库 LIMIT 语句调用
+     */
     public function paginate($pageNum, $furtherPageInfo = true){
         $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
         $startAt = (($currentPage-1)*$pageNum);
@@ -268,7 +324,6 @@ class Database{
         // 第一遍先获取到总数，这里对 SQL 语句重新整理
         // 实测当数据量达到 1000000 时，正则要比 explode() 函数慢 0.8s 左右，因此采用后者
         // $countSQL = preg_match("/SELECT (.*) WHERE/", $sql, $result);
-        // TODO: 数据分页查询 准确度问题
 
         $rawSelectSQL = explode(" ", $this->SQLStatement)[1];
         $countSQL = str_replace($rawSelectSQL, 'COUNT('.$rawSelectSQL.')', $this->SQLStatement);
@@ -285,8 +340,12 @@ class Database{
 
     }
 
-    // TODO: get() 方法
+    /**
+     * 数据获取
+     * @return Collection
+     * @uses 取出数据库内容，并以 Collection 集合返回。用于将 Database 层的数据转换至 Collection
+     */
     public function get(){
-
+        return Collection::make($this->fetchAll())->format($this->model);
     }
 }

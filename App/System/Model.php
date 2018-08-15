@@ -30,7 +30,12 @@ class Model implements Jsonable
      */
 	public static function find($id){
         $db = new Database(static::$table);
-        return new static($db->where([ 'id' => $id])->fetch());
+        if($result = $db->where([ 'id' => $id])->fetch()){
+            return new static($result);
+        } else {
+            return null;
+        }
+
     }
 
     /**
@@ -58,8 +63,7 @@ class Model implements Jsonable
      * @return Database
      */
     public static function where($sqlConditionArray = []){
-        $db = new Database(static::$table);
-        return $db->where($sqlConditionArray);
+        return Database::model(static::class)->where($sqlConditionArray);
 	}
 
     /**
@@ -68,8 +72,7 @@ class Model implements Jsonable
      * @return Database
      */
     public static function whereRaw($sqlConditionStatement = ''){
-        $db = new Database(static::$table);
-        return $db->whereRaw($sqlConditionStatement);
+        return Database::model(static::class)->whereRaw($sqlConditionStatement);
     }
 
     /**
@@ -78,18 +81,24 @@ class Model implements Jsonable
      * @return Database
      */
     public static function raw($sqlStatement){
-        $sql = str_replace("{table}",static::$table,$sqlStatement);
-        $db = new Database(static::$table);
-        return $db->query($sql);
+        return Database::model(static::class)->query($sqlStatement,[":table"=> static::$table]);
     }
 
+    /**
+     * Model 分页
+     * @param int $pageNum, boolean $furtherPageInfo
+     * @return Collection
+     * @uses Model 集合分页功能
+     */
+    public static function paginate($pageNum, $furtherPageInfo = true){
+        return static::where()->paginate($pageNum, $furtherPageInfo);
+    }
 
     /*
      * 不知道有多少人会查阅我这个框架的源码，其实仔细看看我上面那几个查询的方法，你就会发现其实 find() 方法可以调用 where() 方法实现，where() 方法可以调用 whereRaw() 方法实现，whereRaw() 方法可以调用 raw() 方法实现，想要省代码的话可以省到极致，不过耦合度就要妥协了。具体的实现方法，请翻阅 Database 类的源码
      * Rytia, 2018.08.12 凌晨
      * */
 
-    // TODO: ORM 修改更新
 
     /**
      * 保存当前操作的实例
@@ -98,33 +107,20 @@ class Model implements Jsonable
      * @return boolean
      */
     public function save($objectData = []){
-        // 此方法要防注入
+
         if (empty($objectData)){
             $objectData = $this->objectData;
         }
-        // 拼接 SQL 语句，判断是新增还是更新
-        if (is_null(static::find($this->id))) {
-            // 生成 count($this->objectData) 个 ?, 作为占位符
-            $sqlPlaceholder = "?";
-            for ($i = 1; $i<count($this->objectData); $i++) {
-                $sqlPlaceholder .= ',?';
-            }
 
-            $sql = 'INSERT INTO '.static::$table.' ('.implode(',',array_keys($objectData)).') VALUES ('.$sqlPlaceholder.')';
+        // 判断是新增还是更新
+        if (is_null(static::find($this->id))) {
+            // 插入新的条目到数据表
+            return Database::table(static::$table)->insert($objectData);
         } else {
-            foreach ($objectData as $key => $value) {
-                if (isset($sql)) {
-                    $sql .= " , ".$key.'=?';
-                } else {
-                    $sql = $key.'=?';
-                }
-            }
-            $sql = 'UPDATE '.static::$table.' SET '.$sql.' WHERE id='.$this->id;
+            // 更新已有的条目
+            return Database::table(static::$table)->where(['id' => $this->id])->update($objectData);
         }
 
-        // 执行语句，更新数据库
-        $db = new Database(static::$table);
-        return $db->prepare($sql,array_values($objectData));
     }
 
     /**
@@ -137,10 +133,13 @@ class Model implements Jsonable
         return $this->save($objectData);
     }
 
+    /**
+     * 删除当前操作的实例
+     * @return boolean
+     * @uses 用于更新当前操作的实例信息到数据库，
+     */
     public function delete(){
-        $sql = 'DELETE FROM '.static::$table.' WHERE id=?';
-        $db = new Database(static::$table);
-        return $db->prepare($sql,[$this->id]);
+        return Database::table(static::$table)->where(['id' => $this->id])->delete( );
     }
 
 
@@ -211,8 +210,11 @@ class Model implements Jsonable
     }
 
     public function __call($name, $arguments) {
-        $db = new database(static::$table);
-        $db->$name($arguments);
+        return Database::model(static::class)->$name(...$arguments);
+    }
+
+    public static function __callStatic($name, $arguments) {
+        return Database::model(static::class)->$name(...$arguments);
     }
 
 
