@@ -281,7 +281,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
     /**
      * 依据字段排序元素
-     * @param string $field, string $orderBy
+     * @param string $field, string $method
      * @return Collection
      * @uses Collection 元素排序，集合中的元素应为 Model 实例，且传入比较所依据的字段
      */
@@ -404,7 +404,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     }
 
     /**
-     * 将集合转换为字符串
+     * 将 Collection 转换为字符串
      * @return string
      */
     public function __toString() {
@@ -412,7 +412,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     }
 
     /**
-     * 将实例转换为 JSON 字符串
+     * 将 Collection 转换为 JSON 字符串
      * @return string
      */
     public function toJson($option = 0) {
@@ -425,8 +425,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         },$this->collectionItems),$option);
     }
 
-    // TODO: toArray()
+    /**
+     * 将 Collection 转换为数组
+     * @return array
+     */
     public function toArray(){
-        
+        return $this->collectionItems;
     }
 }

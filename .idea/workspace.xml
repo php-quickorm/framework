@@ -4,12 +4,11 @@
     <bookmark url="file://$PROJECT_DIR$/App/System/Collection.php" line="247" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d14109e8-dd4c-4f2d-8db3-442e006f2a64" name="Default" comment="完成 数据库部分方法">
+    <list default="true" id="d14109e8-dd4c-4f2d-8db3-442e006f2a64" name="Default" comment="完善 Database 修改插入保存">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Controller/apiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Controller/apiController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/System/Collection.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/System/Collection.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/System/Database.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/System/Database.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/System/Model.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/System/Model.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -44,18 +43,18 @@
     <session id="-2016741292">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="7" />
+          <entry key="project.closed" value="9" />
           <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.1" value="1" />
-          <entry key="project.open.time.10" value="3" />
-          <entry key="project.open.time.11" value="2" />
+          <entry key="project.open.time.10" value="4" />
+          <entry key="project.open.time.11" value="3" />
           <entry key="project.open.time.12" value="1" />
           <entry key="project.open.time.13" value="1" />
           <entry key="project.open.time.16" value="1" />
           <entry key="project.open.time.7" value="2" />
-          <entry key="project.open.time.8" value="2" />
+          <entry key="project.open.time.8" value="3" />
           <entry key="project.open.time.9" value="2" />
-          <entry key="project.opened" value="16" />
+          <entry key="project.opened" value="19" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -78,16 +77,16 @@
         <counts>
           <entry key="dummy" value="27" />
           <entry key="json" value="54" />
-          <entry key="php" value="18573" />
+          <entry key="php" value="19525" />
           <entry key="sql" value="7" />
-          <entry key="txt" value="203" />
+          <entry key="txt" value="225" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JSON" value="54" />
-          <entry key="PHP" value="18573" />
-          <entry key="PLAIN_TEXT" value="230" />
+          <entry key="PHP" value="19525" />
+          <entry key="PLAIN_TEXT" value="252" />
           <entry key="Scratch" value="7" />
         </counts>
       </usages-collector>
@@ -101,11 +100,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="214">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/App/System/Database.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6279">
-              <caret line="272" column="80" selection-start-line="272" selection-start-column="75" selection-end-line="272" selection-end-column="80" />
+            <state relative-caret-position="714">
+              <caret line="285" column="22" selection-start-line="285" selection-start-column="22" selection-end-line="285" selection-end-column="22" />
               <folding>
                 <element signature="e#24#44#0#PHP" expanded="true" />
               </folding>
@@ -125,7 +124,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/App/System/Model.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1784">
+            <state relative-caret-position="3432">
               <caret line="141" column="84" selection-start-line="141" selection-start-column="84" selection-end-line="141" selection-end-column="84" />
               <folding>
                 <element signature="e#24#44#0#PHP" expanded="true" />
@@ -142,8 +141,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/App/Controller/apiController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="661">
-              <caret line="70" lean-forward="true" selection-start-line="70" selection-end-line="70" />
+            <state relative-caret-position="2592">
+              <caret line="95" column="33" selection-start-line="95" selection-start-column="33" selection-end-line="95" selection-end-column="33" />
               <folding>
                 <element signature="e#28#50#0#PHP" expanded="true" />
               </folding>
@@ -151,11 +150,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/App/System/Collection.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="722">
-              <caret line="429" column="8" selection-start-line="429" selection-start-column="8" selection-end-line="429" selection-end-column="8" />
+            <state relative-caret-position="819">
+              <caret line="287" column="24" selection-start-line="287" selection-start-column="20" selection-end-line="287" selection-end-column="24" />
               <folding>
                 <element signature="e#25#39#0#PHP" expanded="true" />
               </folding>
@@ -207,7 +206,6 @@
       <find>constructArray</find>
       <find>对象</find>
       <find>constructCollection</find>
-      <find>sort</find>
       <find>dataArray</find>
       <find>update</find>
       <find>object</find>
@@ -215,6 +213,8 @@
       <find>objectSQL</find>
       <find>PHP-Quick-ORM</find>
       <find>array</find>
+      <find>order</find>
+      <find>sort</find>
     </findStrings>
     <replaceStrings>
       <replace>self::$</replace>
@@ -253,10 +253,10 @@
         <option value="$PROJECT_DIR$/App/System/DatabaseDriver/pdo_sqlite.php" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/1e030114-0e61-4e67-a41b-dc37d6426954/console.sql" />
         <option value="$PROJECT_DIR$/App/System/DatabaseDriver/pdo_mysql.php" />
-        <option value="$PROJECT_DIR$/App/System/Database.php" />
-        <option value="$PROJECT_DIR$/App/Controller/apiController.php" />
         <option value="$PROJECT_DIR$/App/System/Model.php" />
+        <option value="$PROJECT_DIR$/App/Controller/apiController.php" />
         <option value="$PROJECT_DIR$/App/System/Collection.php" />
+        <option value="$PROJECT_DIR$/App/System/Database.php" />
       </list>
     </option>
   </component>
@@ -272,7 +272,7 @@
       <path value="" />
     </include_path>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
     <option name="width" value="1920" />
     <option name="height" value="1080" />
   </component>
@@ -397,7 +397,10 @@
       <workItem from="1534144199320" duration="10293000" />
       <workItem from="1534221674748" duration="27031000" />
       <workItem from="1534312522326" duration="2060000" />
-      <workItem from="1534315145915" duration="15383000" />
+      <workItem from="1534315145915" duration="15458000" />
+      <workItem from="1534401199854" duration="2000" />
+      <workItem from="1534402333897" duration="211000" />
+      <workItem from="1534487321824" duration="8478000" />
     </task>
     <task id="LOCAL-00001" summary="完善 多级路由">
       <created>1533568404426</created>
@@ -484,11 +487,18 @@
       <updated>1534315145614</updated>
       <workItem from="1534315133919" duration="12000" />
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="完善 Database 修改插入保存">
+      <created>1534348962834</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1534348962834</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="159822000" />
+    <option name="totallyTimeSpent" value="168588000" />
   </component>
   <component name="TodoView" selected-index="2">
     <todo-panel id="selected-file">
@@ -500,7 +510,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="848" extended-state="6" />
+    <frame x="0" y="0" width="1536" height="864" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.5150463" visible="true" weight="0.21158855" />
@@ -568,7 +578,8 @@
     <MESSAGE value="完成 Collection 分页" />
     <MESSAGE value="新增 SQLite 驱动方式" />
     <MESSAGE value="完成 数据库部分方法" />
-    <option name="LAST_COMMIT_MESSAGE" value="完成 数据库部分方法" />
+    <MESSAGE value="完善 Database 修改插入保存" />
+    <option name="LAST_COMMIT_MESSAGE" value="完善 Database 修改插入保存" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/vendor/autoload.php">
@@ -636,29 +647,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/App/Controller/apiController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="661">
-          <caret line="70" lean-forward="true" selection-start-line="70" selection-end-line="70" />
-          <folding>
-            <element signature="e#28#50#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/System/Database.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6279">
-          <caret line="272" column="80" selection-start-line="272" selection-start-column="75" selection-end-line="272" selection-end-column="80" />
-          <folding>
-            <element signature="e#24#44#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/App/System/Model.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1784">
+        <state relative-caret-position="3432">
           <caret line="141" column="84" selection-start-line="141" selection-start-column="84" selection-end-line="141" selection-end-column="84" />
           <folding>
             <element signature="e#24#44#0#PHP" expanded="true" />
@@ -666,12 +657,32 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/App/Controller/apiController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2592">
+          <caret line="95" column="33" selection-start-line="95" selection-start-column="33" selection-end-line="95" selection-end-column="33" />
+          <folding>
+            <element signature="e#28#50#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/App/System/Collection.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="722">
-          <caret line="429" column="8" selection-start-line="429" selection-start-column="8" selection-end-line="429" selection-end-column="8" />
+        <state relative-caret-position="819">
+          <caret line="287" column="24" selection-start-line="287" selection-start-column="20" selection-end-line="287" selection-end-column="24" />
           <folding>
             <element signature="e#25#39#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/System/Database.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="714">
+          <caret line="285" column="22" selection-start-line="285" selection-start-column="22" selection-end-line="285" selection-end-column="22" />
+          <folding>
+            <element signature="e#24#44#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>

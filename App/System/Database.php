@@ -10,6 +10,11 @@ class Database{
     public $SQLStatement;
     public $table;
     public $model;
+    public $select = '*';
+    public $where;
+    public $join;
+    public $on;
+    public $orderBy;
 
     /**
      * PHP-QuickORM 框架数据库基础类
@@ -133,11 +138,17 @@ class Database{
         return $this->PDOConnect->commit();
     }
 
+
     // ORM 数据库查询方法
 
+    /**
+     * 字段选择
+     * @param string $sqlStatement
+     * @return Database
+     */
     public function select($sqlStatement = '*'){
-        // TODO: 完善 select() 方式
-        $this->SQLStatement = 'SELECT '.$sqlStatement;
+        $this->select = $sqlStatement;
+        $this->SQLStatement = 'SELECT '.$sqlStatement.' FROM '.$this->table;
         return $this;
     }
 
@@ -148,21 +159,22 @@ class Database{
      */
     public function where($sqlConditionArray = []){
         // 判断是否第一次执行
-        if(empty($this->SQLStatement)) {
+        if(empty($this->where)) {
             // 判断 $sqlConditionArray 是否传入：加入空条件的判断使开发变得简便
             if(empty($sqlConditionArray)){
                 // 未传入条件，显示全部数据
-                $this->SQLStatement = 'SELECT * FROM '.$this->table;
+                $this->SQLStatement = 'SELECT '.$this->select.' FROM '.$this->table;
             } else {
                 // 传入条件，进行 SQL 语句拼接
                 foreach ($sqlConditionArray as $key => $value) {
-                    if (isset($sql)) {
-                        $sql .= " AND ".$key.'="'.$value.'"';
+                    if (isset($whereSQL)) {
+                        $whereSQL .= " AND ".$key.'="'.$value.'"';
                     } else {
-                        $sql = $key.'="'.$value.'"';
+                        $whereSQL = $key.'="'.$value.'"';
                     }
                 }
-                $this->SQLStatement = 'SELECT * FROM '.$this->table.' WHERE ('.$sql.')';
+                $this->where = '('.$whereSQL.')';
+                $this->SQLStatement = 'SELECT '.$this->select.' FROM '.$this->table.' WHERE '.$this->where;
             }
         } else {
             // 不是第一次执行，判断 $sqlConditionArray 是否传入
@@ -171,13 +183,14 @@ class Database{
             } else {
                 // 传入条件，进行 SQL 语句拼接
                 foreach ($sqlConditionArray as $key => $value) {
-                    if (isset($sql)) {
-                        $sql .= " AND ".$key.'="'.$value.'"';
+                    if (isset($whereSQL)) {
+                        $whereSQL .= " AND ".$key.'="'.$value.'"';
                     } else {
-                        $sql = $key.'="'.$value.'"';
+                        $whereSQL = $key.'="'.$value.'"';
                     }
                 }
-                $this->SQLStatement = $this->SQLStatement.' AND ('.$sql.')';
+                $this->where .= ' AND ('.$whereSQL.')';
+                $this->SQLStatement = 'SELECT '.$this->select.' FROM '.$this->table.' WHERE '.$this->where;
             }
         }
 
@@ -192,12 +205,13 @@ class Database{
      */
     public function whereRaw($sqlConditionStatement = ''){
         // 判断是否第一次执行
-        if(empty($this->SQLStatement)) {
+        if(empty($this->where)) {
             if (empty($sqlConditionStatement)) {
                 // 未传入条件，显示全部数据
-                $this->objectSQL = 'SELECT * FROM ' . $this->table;
+                $this->objectSQL = 'SELECT '.$this->select.' FROM ' . $this->table;
             } else {
-                $this->SQLStatement = 'SELECT * FROM ' . $this->table . ' WHERE (' . $sqlConditionStatement . ')';
+                $this->where = '('.$sqlConditionStatement.')';
+                $this->SQLStatement = 'SELECT '.$this->select.' FROM ' . $this->table . ' WHERE ' . $this->where;
             }
         } else {
             // 判断 $sqlConditionArray 是否传入：加入空条件的判断使开发变得简便
@@ -205,7 +219,8 @@ class Database{
                 // 未传入条件，SQL语句不做任何改动
             } else {
                 // 传入条件，进行 SQL 语句拼接
-                $this->SQLStatement = $this->SQLStatement . ' AND (' . $sqlConditionStatement . ')';
+                $this->where .= ' AND ('.$sqlConditionStatement.')';
+                $this->SQLStatement = 'SELECT '.$this->select.' FROM '.$this->table.' WHERE '.$this->where;
             }
         }
 
@@ -218,20 +233,21 @@ class Database{
      * @param array $sqlConditionArray
      * @return Database
      */
-    public function orWhere($sqlConditionArray = ''){
+    public function orWhere($sqlConditionArray = []){
         // 判断 $sqlConditionArray 是否传入：加入空条件的判断使开发变得简便
         if(empty($sqlConditionArray)){
             // 未传入条件，SQL语句不做任何改动
         } else {
             // 传入条件，进行 SQL 语句拼接
             foreach ($sqlConditionArray as $key => $value) {
-                if (isset($sql)) {
-                    $sql .= " AND ".$key.'="'.$value.'"';
+                if (isset($whereSQL)) {
+                    $whereSQL .= " AND ".$key.'="'.$value.'"';
                 } else {
-                    $sql = $key.'="'.$value.'"';
+                    $whereSQL = $key.'="'.$value.'"';
                 }
             }
-            $this->SQLStatement = $this->SQLStatement.' OR ('.$sql.')';
+            $this->where .= ' OR ('.$whereSQL.')';
+            $this->SQLStatement = 'SELECT '.$this->select.' FROM '.$this->table.' WHERE '.$this->where;
         }
 
         $this->prepare($this->SQLStatement);
@@ -248,12 +264,28 @@ class Database{
         if(empty($sqlConditionStatement)){
             // 未传入条件，SQL语句不做任何改动
         } else {
+            $this->where .= ' OR ('.$sqlConditionStatement.')';
             // 传入条件，进行 SQL 语句拼接
-            $this->SQLStatement = $this->SQLStatement.' OR ('.$sqlConditionStatement.')';
+            $this->SQLStatement = 'SELECT '.$this->select.' FROM '.$this->table.' WHERE '.$this->where;
         }
 
         $this->prepare($this->SQLStatement);
         return $this;
+    }
+
+    // TODO: join()
+    public function join(){
+
+    }
+
+    // TODO: on()
+    public function on(){
+
+    }
+
+    // TODO: orderBy()
+    public function orderBy(){
+
     }
 
 
@@ -281,11 +313,9 @@ class Database{
      * @return boolean
      */
     public function update($data){
-        // 框架设计之初，没有考虑过单独保存每次 where、select、join 等的值；因此每次做 UPDATE 等操作时，必须重新抽离出 where，是经验不足导致设计时的缺陷，这个问题将会在下一个大版本中得到解决。
-        // 下面 paginate() 方法使用了 explode 原因相同
-        $rawWhereSQL = explode(" ", $this->SQLStatement);
-        $where = implode("",array_slice($rawWhereSQL,5,count($rawWhereSQL)-5));
 
+        $where = $this->where;
+        //   拼接 SQL 语句，形成 id=?, name=? 的形式
         foreach ($data as $key => $value) {
             if (isset($sql)) {
                 $sql .= " , ".$key.'=?';
@@ -303,9 +333,7 @@ class Database{
      * @uses 用于更新当前操作的实例信息到数据库，
      */
     public function delete(){
-        // 无奈拼接 where
-        $rawWhereSQL = explode(" ", $this->SQLStatement);
-        $where = implode("",array_slice($rawWhereSQL,5,count($rawWhereSQL)-5));
+        $where = $this->where;
         // 执行 SQL 语句删除条目
         $this->SQLStatement = 'DELETE FROM '.$this->table.' WHERE '.$where;
         return $this->prepare($this->SQLStatement);
@@ -318,22 +346,18 @@ class Database{
      * @uses 数据库 LIMIT 语句调用
      */
     public function paginate($pageNum, $furtherPageInfo = true){
+        // 获取当前页码
         $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
         $startAt = (($currentPage-1)*$pageNum);
 
-        // 第一遍先获取到总数，这里对 SQL 语句重新整理
-        // 实测当数据量达到 1000000 时，正则要比 explode() 函数慢 0.8s 左右，因此采用后者
-        // $countSQL = preg_match("/SELECT (.*) WHERE/", $sql, $result);
-
-        $rawSelectSQL = explode(" ", $this->SQLStatement)[1];
-        $countSQL = str_replace($rawSelectSQL, 'COUNT('.$rawSelectSQL.')', $this->SQLStatement);
+        // 执行语句获取总行数
+        $select = $this->select;
+        $countSQL = str_replace($select, 'COUNT('.$select.')', $this->SQLStatement);
         $total =  $this->PDOConnect->query($countSQL)->fetch()[0];
-
 
         // 拼接 SQL 语句：select * from table limit start,pageNum
         $this->SQLStatement = $this->SQLStatement." LIMIT ".$startAt.",".$pageNum;;
         $this->prepare($this->SQLStatement);
-
 
         // 返回集合
         return Collection::make($this->fetchAll())->format($this->model)->forPage($pageNum, $currentPage, $total, $furtherPageInfo);

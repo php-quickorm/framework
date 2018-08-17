@@ -9,13 +9,20 @@ class apiController {
      * @param $id
      */
     public function test($id){
-        // echo $_SERVER['REQUEST_METHOD'];
-        // 删除条目
-        $result = Demo::find($id)->delete();
+
+        // 测试数据库层封装
+        $result = Database::table('demo')
+                            ->setModel(Demo::class)
+                            ->select('title')
+                            ->where(["author" => "Rytia"])
+                            ->orWhereRaw('content LIKE "%测试%"')
+                            ->paginate(5);
+
         print_r($result);
+
     }
 
-    // 查询类方法演示
+    // ORM 查询类方法演示
 
     public function find($id){
         // 通过 id 查询数据表
@@ -84,6 +91,20 @@ class apiController {
         $test = Database::model(Demo::class)->where()->paginate(3);
 
         print_r($test);
+    }
+
+    public function databaseWhere(){
+
+        // 数据库层封装演示1
+        $result = Database::table('demo')
+            ->setModel(Demo::class)
+            ->select('title')
+            ->where(["author" => "Rytia"])
+            ->orWhereRaw('content LIKE "%测试%"')
+            ->paginate(5);
+
+        print_r($result);
+
     }
 
 }
