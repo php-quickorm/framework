@@ -10,16 +10,6 @@ class apiController {
      */
     public function test($id){
 
-        // 测试数据库层封装
-        $result = Database::table('demo')
-                            ->setModel(Demo::class)
-                            ->select('title')
-                            ->where(["author" => "Rytia"])
-                            ->orWhereRaw('content LIKE "%测试%"')
-                            ->paginate(5);
-
-        print_r($result);
-
     }
 
     // ORM 查询类方法演示
@@ -94,7 +84,6 @@ class apiController {
     }
 
     public function databaseWhere(){
-
         // 数据库层封装演示1
         $result = Database::table('demo')
             ->setModel(Demo::class)
@@ -107,4 +96,15 @@ class apiController {
 
     }
 
+    public function databaseOn(){
+        // 数据库层封装演示2
+        $result = Database::table('wiki')
+            ->select('DISTINCT zhong.name,wiki.coordinate')
+            ->join('zhong')
+            ->on('wiki.zhong=zhong.id')
+            ->orderBy("coordinate", "DESC")
+            ->fetchAll();
+        print_r($result);
+
+    }
 }

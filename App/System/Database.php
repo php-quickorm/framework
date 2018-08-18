@@ -106,18 +106,20 @@ class Database{
     }
 
     /**
-     * 取回第一条结果
+     * 执行 SQL 语句并取回第一条结果
      * @return array
      */
     public function fetch() {
+        $this->prepare($this->SQLStatement);
         return $this->PDOStatement->fetch(2);
     }
 
     /**
-     * 取回结果集
+     * 执行 SQL 语句并取回结果集
      * @return array
      */
     public function fetchAll() {
+        $this->prepare($this->SQLStatement);
         return $this->PDOStatement->fetchAll(2);
     }
 
@@ -143,11 +145,18 @@ class Database{
 
     /**
      * 字段选择
-     * @param string $sqlStatement
+     * @param string|array $sqlStatement
      * @return Database
      */
     public function select($sqlStatement = '*'){
-        $this->select = $sqlStatement;
+        // 对传入类型进行判断
+        if (is_array($sqlStatement)) {
+            // 拼接数组形成 SQL 语句
+            $this->select = implode(",",$sqlStatement);
+        } else {
+            $this->select = $sqlStatement;
+        }
+
         $this->SQLStatement = 'SELECT '.$sqlStatement.' FROM '.$this->table;
         return $this;
     }
@@ -163,7 +172,7 @@ class Database{
             // 判断 $sqlConditionArray 是否传入：加入空条件的判断使开发变得简便
             if(empty($sqlConditionArray)){
                 // 未传入条件，显示全部数据
-                $this->SQLStatement = 'SELECT '.$this->select.' FROM '.$this->table;
+                $this->SQLStatement = 'SELECT '.$this->select.' FROM '.$this->table.' '.$this->join.' '.$this->on;
             } else {
                 // 传入条件，进行 SQL 语句拼接
                 foreach ($sqlConditionArray as $key => $value) {
@@ -174,7 +183,9 @@ class Database{
                     }
                 }
                 $this->where = '('.$whereSQL.')';
-                $this->SQLStatement = 'SELECT '.$this->select.' FROM '.$this->table.' WHERE '.$this->where;
+
+                // 组合语句，加入 join 和 on
+                $this->SQLStatement = 'SELECT '.$this->select.' FROM '.$this->table.' '.$this->join.' '.$this->on.' WHERE '.$this->where;
             }
         } else {
             // 不是第一次执行，判断 $sqlConditionArray 是否传入
@@ -190,11 +201,10 @@ class Database{
                     }
                 }
                 $this->where .= ' AND ('.$whereSQL.')';
-                $this->SQLStatement = 'SELECT '.$this->select.' FROM '.$this->table.' WHERE '.$this->where;
+                $this->SQLStatement = 'SELECT '.$this->select.' FROM '.$this->table.' '.$this->join.' '.$this->on.' WHERE '.$this->where;
             }
         }
 
-        $this->prepare($this->SQLStatement);
         return $this;
     }
 
@@ -211,7 +221,7 @@ class Database{
                 $this->objectSQL = 'SELECT '.$this->select.' FROM ' . $this->table;
             } else {
                 $this->where = '('.$sqlConditionStatement.')';
-                $this->SQLStatement = 'SELECT '.$this->select.' FROM ' . $this->table . ' WHERE ' . $this->where;
+                $this->SQLStatement = 'SELECT '.$this->select.' FROM ' . $this->table .' '.$this->join.' '.$this->on.' WHERE ' . $this->where;
             }
         } else {
             // 判断 $sqlConditionArray 是否传入：加入空条件的判断使开发变得简便
@@ -220,11 +230,10 @@ class Database{
             } else {
                 // 传入条件，进行 SQL 语句拼接
                 $this->where .= ' AND ('.$sqlConditionStatement.')';
-                $this->SQLStatement = 'SELECT '.$this->select.' FROM '.$this->table.' WHERE '.$this->where;
+                $this->SQLStatement = 'SELECT '.$this->select.' FROM '.$this->table.' '.$this->join.' '.$this->on.' WHERE '.$this->where;
             }
         }
 
-        $this->prepare($this->SQLStatement);
         return $this;
     }
 
@@ -247,10 +256,9 @@ class Database{
                 }
             }
             $this->where .= ' OR ('.$whereSQL.')';
-            $this->SQLStatement = 'SELECT '.$this->select.' FROM '.$this->table.' WHERE '.$this->where;
+            $this->SQLStatement = 'SELECT '.$this->select.' FROM '.$this->table.' '.$this->join.' '.$this->on.' WHERE '.$this->where;
         }
 
-        $this->prepare($this->SQLStatement);
         return $this;
     }
 
@@ -266,26 +274,77 @@ class Database{
         } else {
             $this->where .= ' OR ('.$sqlConditionStatement.')';
             // 传入条件，进行 SQL 语句拼接
-            $this->SQLStatement = 'SELECT '.$this->select.' FROM '.$this->table.' WHERE '.$this->where;
+            $this->SQLStatement = 'SELECT '.$this->select.' FROM '.$this->table.' '.$this->join.' '.$this->on.' WHERE '.$this->where;
         }
 
-        $this->prepare($this->SQLStatement);
         return $this;
     }
 
-    // TODO: join()
-    public function join(){
-
+    /**
+     * join 语句
+     * @param string $table, string $method = inner
+     * @return Database
+     * @uses 用于根据两个或多个表中的列之间的关系查询数据。其中 method 可选 left, right, full, inner
+     */
+    public function join($table,$method = 'inner'){
+        switch ($method){
+            case 'left': $methodSQL = 'LEFT'; break;
+            case 'right': $methodSQL = 'RIGHT'; break;
+            case 'full': $methodSQL = 'FULL OUTER'; break;
+            default: $methodSQL = 'INNER'; break;
+        }
+        $this->join = $methodSQL.' JOIN '.$table;
+        $this->SQLStatement = 'SELECT '.$this->select.' FROM '.$this->table.' '.$this->join;
+        return $this;
     }
 
-    // TODO: on()
-    public function on(){
+    /**
+     * on 语句
+     * @param string $sqlConditionStatement
+     * @return Database
+     * @uses 根据关系查询数据表
+     */
+    public function on($sqlConditionStatement){
+        // on 和 where 条件的差别在于 SQL 的 join 语句会生成临时表
+        // 1. on 所附带的条件是在生成临时表时使用的条件
+        // 2. where 所附带的条件是在临时表生成好后做进一步筛选的条件，若不为真则将该条目过滤
 
+        $this->on = "ON ".$sqlConditionStatement;
+        $this->SQLStatement = 'SELECT '.$this->select.' FROM '.$this->table.' '.$this->join.' '.$this->on;
+        return $this;
     }
 
-    // TODO: orderBy()
-    public function orderBy(){
+    /**
+     * 根据字段排列结果集
+     * @param string|array $field, string $method
+     * @return Database
+     * @uses 根据字段排列结果集, 其中 $field 可为单个字段字符串或关联数组
+     */
+    public function orderBy($field,$method = 'ASC'){
+        if (is_array($field)){
 
+            // 将数组拼接为 SQL 语句，传入样例
+            // $array = [
+            // 	'arr1' => 'DESC',
+            // 	'arr2' => 'DESC',
+            // 	'arr3' => 'ASC'
+            // ];
+
+            foreach ($field as $key => $value) {
+                if (isset($sql)) {
+                    $sql .= ', '.$key.' '.$value;
+                } else {
+                    $sql = $key.' '.$value;
+                }
+            }
+            $this->orderBy = ' ORDER BY '.$sql;
+        } else {
+            // 直接拼接两个参数
+            $this->orderBy = ' ORDER BY '.$field.' '.$method;
+        }
+
+        $this->SQLStatement .= $this->orderBy;
+        return $this;
     }
 
 
@@ -356,8 +415,7 @@ class Database{
         $total =  $this->PDOConnect->query($countSQL)->fetch()[0];
 
         // 拼接 SQL 语句：select * from table limit start,pageNum
-        $this->SQLStatement = $this->SQLStatement." LIMIT ".$startAt.",".$pageNum;;
-        $this->prepare($this->SQLStatement);
+        $this->SQLStatement = $this->SQLStatement." LIMIT ".$startAt.",".$pageNum;
 
         // 返回集合
         return Collection::make($this->fetchAll())->format($this->model)->forPage($pageNum, $currentPage, $total, $furtherPageInfo);
@@ -365,7 +423,7 @@ class Database{
     }
 
     /**
-     * 数据获取
+     * 执行 SQL 语句并将结果格式化为 Collection
      * @return Collection
      * @uses 取出数据库内容，并以 Collection 集合返回。用于将 Database 层的数据转换至 Collection
      */
