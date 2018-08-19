@@ -3,6 +3,12 @@ namespace System;
 use ReflectionClass;
 use ReflectionException;
 use System\DatabaseDriver\pdo_mysql;
+/**
+ * PHP-QuickORM 框架数据库基础类
+ * @author Rytia <rytia@outlook.com>
+ * @uses 用于驱动数据库，属于对 PHP PDO 的二次封装以满足快速操作，其中 PDO 对象保存在 $this->PDOConnect 中，PDOStatement 对象保存在 $this->PDOStatement 中
+ */
+
 class Database{
 
     public $PDOStatement;
@@ -16,11 +22,6 @@ class Database{
     public $on;
     public $orderBy;
 
-    /**
-     * PHP-QuickORM 框架数据库基础类
-     * @author Rytia <rytia@outlook.com>
-     * @uses 用于驱动数据库，属于对 PHP PDO 的二次封装以满足快速操作，其中 PDO 对象保存在 $this->PDOConnect 中，PDOStatement 对象保存在 $this->PDOStatement 中
-    */
 
     public function __construct($table) {
         // 使用 pdo 进行处理
@@ -51,7 +52,8 @@ class Database{
             $reflect = new ReflectionClass($modelClass);
         }
         catch (ReflectionException $e) {
-            echo 'Database Class Failed: ' . $e->getMessage();
+            // 提示错误
+            trigger_error($e->getMessage(),E_USER_ERROR);
         }
         // 创建新的 Database 实例
         $db = new self($reflect->getStaticPropertyValue('table'));
@@ -71,7 +73,8 @@ class Database{
             $reflect = new ReflectionClass($modelClass);
         }
         catch (ReflectionException $e) {
-            echo 'Database Class Failed: ' . $e->getMessage();
+            // 提示错误
+            trigger_error("setModel($modelClass)".$e->getMessage(),E_USER_ERROR);
         }
         // 修改当前实例的数据表和 Model
         $this->table = $reflect->getStaticPropertyValue("table");
@@ -167,6 +170,13 @@ class Database{
      * @return Database
      */
     public function where($sqlConditionArray = []){
+        // 如果是字符串，交由 whereRaw() 处理
+        if (is_string($sqlConditionArray)) {
+            return $this->whereRaw($sqlConditionArray);
+        } elseif (!is_array($sqlConditionArray)) {
+            trigger_error("where($sqlConditionArray) - Parameter type is invalid", E_USER_ERROR);
+        }
+
         // 判断是否第一次执行
         if(empty($this->where)) {
             // 判断 $sqlConditionArray 是否传入：加入空条件的判断使开发变得简便
@@ -243,6 +253,13 @@ class Database{
      * @return Database
      */
     public function orWhere($sqlConditionArray = []){
+        // 如果是字符串，交由 orWhereRaw() 处理
+        if (is_string($sqlConditionArray)) {
+            return $this->orWhereRaw($sqlConditionArray);
+        } elseif (!is_array($sqlConditionArray)) {
+            trigger_error("orWhere($sqlConditionArray) - Parameter type is invalid", E_USER_ERROR);
+        }
+
         // 判断 $sqlConditionArray 是否传入：加入空条件的判断使开发变得简便
         if(empty($sqlConditionArray)){
             // 未传入条件，SQL语句不做任何改动
@@ -406,7 +423,7 @@ class Database{
      */
     public function paginate($pageNum, $furtherPageInfo = true){
         // 获取当前页码
-        $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
+        $currentPage = isset($_GET['page']) ? intval($_GET['page']) : 1;
         $startAt = (($currentPage-1)*$pageNum);
 
         // 执行语句获取总行数
@@ -428,6 +445,10 @@ class Database{
      * @uses 取出数据库内容，并以 Collection 集合返回。用于将 Database 层的数据转换至 Collection
      */
     public function get(){
+        // 判断 Model 是否设置
+        if (is_null($this->model)) {
+            trigger_error("Model is undefined", E_USER_ERROR);
+        }
         return Collection::make($this->fetchAll())->format($this->model);
     }
 }

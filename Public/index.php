@@ -8,5 +8,7 @@ require __DIR__.'/../vendor/autoload.php';
  * @author: Rytia
  */
 
+set_error_handler('errorHandler');
+
 $query = explode("/",$_SERVER['QUERY_STRING']);
 call_user_func(['Controller\\'.array_shift($query),array_shift($query)],...$query);

@@ -5,7 +5,7 @@ use System\Interfaces\Jsonable;
 /**
  * PHP-QuickORM 框架的 Model 基本类
  * @author Rytia <rytia@outlook.com>
- * @copyright 2018 PHP-JSORM
+ * @copyright 2018 PHP-QuickORM
  */
 
 class Model implements Jsonable
@@ -150,7 +150,7 @@ class Model implements Jsonable
      * @uses 在新建时可通过此类创建实例
      */
     public static function create($array = []) {
-        if (empty($array)) {
+        if (empty($array) || !is_array($array)) {
             return null;
         } else {
             $model = new static($array);
@@ -208,14 +208,14 @@ class Model implements Jsonable
         // unset($demo->property)
         unset($this->objectData[$name]);
     }
-
-    public function __call($name, $arguments) {
-        return Database::model(static::class)->$name(...$arguments);
-    }
-
-    public static function __callStatic($name, $arguments) {
-        return Database::model(static::class)->$name(...$arguments);
-    }
+    
+//    public function __call($name, $arguments) {
+//        return Database::model(static::class)->$name(...$arguments);
+//    }
+//
+//    public static function __callStatic($name, $arguments) {
+//        return Database::model(static::class)->$name(...$arguments);
+//    }
 
 
     /**

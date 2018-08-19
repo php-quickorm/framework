@@ -13,7 +13,7 @@ class pdo_sqlite{
             $db->exec("SET NAMES utf8");
         }
         catch (\PDOException $e) {
-            echo 'Connection Failed: ' . $e->getMessage();
+            trigger_error('Connection Failed: '.$e->getMessage(),E_USER_ERROR);
         }
         finally{
             return $db;

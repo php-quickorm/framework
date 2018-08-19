@@ -1,16 +1,14 @@
 <?php
 namespace System;
-
 use Countable;
 use ArrayAccess;
 use ArrayIterator;
 use IteratorAggregate;
 use System\Interfaces\Jsonable;
-
 /**
  * PHP-QuickORM 框架的数据集合类
  * @author Rytia <rytia@outlook.com>
- * @copyright 2018 PHP-JSORM
+ * @copyright 2018 PHP-QuickORM
  */
 
 class Collection implements ArrayAccess, Countable, IteratorAggregate
@@ -266,16 +264,16 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
      * @return Collection
      * @uses 在新建或调用多条记录时可通过此类创建实例数组
      */
-    public function format($modelClass, $sqlStatementCache = '') {
+    public function format($modelClass) {
         $objectArray = [];
         // 构建实例数组
         foreach($this->collectionItems as $key => $value) {
-            $model = new $modelClass($value,$sqlStatementCache);
+            $model = new $modelClass($value);
             if (!is_null($model)) {
                 array_push($objectArray,$model);
             }
         }
-        return new Collection($objectArray,$sqlStatementCache);
+        return new Collection($objectArray);
     }
 
 
@@ -320,7 +318,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
         // 保存集合总大小
         $total = $this->count();
         // 获取当前页码
-        $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
+        $currentPage = isset($_GET['page']) ? intval($_GET['page']) : 1;
         $startAt = (($currentPage-1)*$pageNum);
         // 使用 PHP 原生切片
         $this->collectionItems = array_slice($this->collectionItems,$startAt,$pageNum);
