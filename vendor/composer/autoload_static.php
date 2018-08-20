@@ -35,7 +35,7 @@ class ComposerStaticInit3dcce667708e66b2aabbed3c392db095
         'System\\DatabaseDriver\\pdo_sqlite' => __DIR__ . '/../..' . '/App/System/DatabaseDriver/pdo_sqlite.php',
         'System\\Interfaces\\Jsonable' => __DIR__ . '/../..' . '/App/System/Interfaces/Jsonable.php',
         'System\\Model' => __DIR__ . '/../..' . '/App/System/Model.php',
-        'System\\Utilities\\Exception' => __DIR__ . '/../..' . '/App/System/Utilities/Exception.php',
+        'System\\Utility\\Exception' => __DIR__ . '/../..' . '/App/System/Utility/Exception.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

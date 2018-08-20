@@ -1,5 +1,5 @@
 <?php
-namespace System\Utilities;
+namespace System\Utility;
 /**
  * PHP-QuickORM 异常处理类
  * @author Rytia <rytia@outlook.com>

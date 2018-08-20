@@ -12,9 +12,9 @@ require __DIR__.'/vendor/autoload.php';
 // 如果您已将产品真正投入使用，请将您的工作目录设置为 /Public
 
 
-require_once __DIR__."/App/System/Utilities/Functions.php";
-set_error_handler('\System\Utilities\Exception::errorReport');
-set_exception_handler('\System\Utilities\Exception::exceptionReport');
+require_once __DIR__ . "/App/System/Utility/Functions.php";
+set_error_handler('\System\Utility\Exception::errorReport');
+set_exception_handler('\System\Utility\Exception::exceptionReport');
 
 $request = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 

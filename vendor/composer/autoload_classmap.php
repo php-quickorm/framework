@@ -12,5 +12,5 @@ return array(
     'System\\DatabaseDriver\\pdo_sqlite' => $baseDir . '/App/System/DatabaseDriver/pdo_sqlite.php',
     'System\\Interfaces\\Jsonable' => $baseDir . '/App/System/Interfaces/Jsonable.php',
     'System\\Model' => $baseDir . '/App/System/Model.php',
-    'System\\Utilities\\Exception' => $baseDir . '/App/System/Utilities/Exception.php',
+    'System\\Utility\\Exception' => $baseDir . '/App/System/Utility/Exception.php',
 );
