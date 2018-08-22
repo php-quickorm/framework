@@ -1,9 +1,28 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: rytia
- * Date: 2018/8/20
- * Time: 14:12
- */
+namespace System\Http;
+Class Request
+{
+    protected $postArray;
+    protected $getArray;
 
-// TODO: REQUEST CLASS
+    public function all(){
+
+    }
+
+    public function input(){
+
+    }
+
+    public function path(){
+
+    }
+
+    public function url(){
+
+    }
+
+    public function method(){
+
+    }
+
+}

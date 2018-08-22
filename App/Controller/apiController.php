@@ -7,7 +7,7 @@ use System\Database;
 class apiController {
 
     public function test(){
-        dd(Demo::where(["id"=>1])->orWhere('author="Rytia"')->get());
+
     }
 
     // ORM 查询类方法演示
