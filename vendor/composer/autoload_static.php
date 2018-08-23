@@ -30,6 +30,7 @@ class ComposerStaticInit3dcce667708e66b2aabbed3c392db095
 
     public static $classMap = array (
         'System\\Collection' => __DIR__ . '/../..' . '/App/System/Collection.php',
+        'System\\Controller' => __DIR__ . '/../..' . '/App/System/Controller.php',
         'System\\Database' => __DIR__ . '/../..' . '/App/System/Database.php',
         'System\\DatabaseDriver\\pdo_mysql' => __DIR__ . '/../..' . '/App/System/DatabaseDriver/pdo_mysql.php',
         'System\\DatabaseDriver\\pdo_sqlite' => __DIR__ . '/../..' . '/App/System/DatabaseDriver/pdo_sqlite.php',

@@ -1,13 +1,14 @@
 <?php
 namespace Controller;
 use System\Collection;
-use Model\Demo;
+use System\Controller;
 use System\Database;
+use Model\Demo;
 
-class apiController {
+class apiController extends Controller {
 
-    public function test(){
-
+    public function test($id){
+        
     }
 
     // ORM 查询类方法演示

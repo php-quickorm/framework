@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'System\\Collection' => $baseDir . '/App/System/Collection.php',
+    'System\\Controller' => $baseDir . '/App/System/Controller.php',
     'System\\Database' => $baseDir . '/App/System/Database.php',
     'System\\DatabaseDriver\\pdo_mysql' => $baseDir . '/App/System/DatabaseDriver/pdo_mysql.php',
     'System\\DatabaseDriver\\pdo_sqlite' => $baseDir . '/App/System/DatabaseDriver/pdo_sqlite.php',
