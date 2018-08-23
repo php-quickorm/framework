@@ -1,8 +1,15 @@
 <?php
 namespace System\Http;
+/**
+ * PHP-QuickORM 框架 HTTP 请求类
+ * @author Rytia <rytia@outlook.com>
+ * @copyright 2018 PHP-QuickORM
+ */
 Class Request
 {
     protected $method;
+    protected $url;
+    protected $path;
     protected $postArray;
     protected $getArray;
 
@@ -11,8 +18,10 @@ Class Request
      * Request constructor.
      */
     public function __construct(){
-        // 获取请求的方式
+        // 获取请求的信息
         $this->method = strtolower($_SERVER['REQUEST_METHOD']);
+        $this->path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $this->url = $_SERVER["REQUEST_URI"];
         $this->postArray = $_POST;
         $this->getArray = $_GET;
     }
@@ -56,23 +65,23 @@ Class Request
      * 获取请求的路径
      * @return string
      */
-    public function path(){
-        return dirname($_SERVER["REQUEST_URI"]);
+    public function getPath(){
+        return $this->path;
     }
 
     /**
      * 获取请求的具体链接
      * @return string
      */
-    public function url(){
-        return $_SERVER["REQUEST_URI"];
+    public function getUrl(){
+        return $this->url;
     }
 
     /**
      * 获取请求的方法
      * @return string
      */
-    public function method(){
+    public function getMethod(){
         return $this->method;
     }
 

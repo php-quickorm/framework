@@ -35,6 +35,8 @@ class ComposerStaticInit3dcce667708e66b2aabbed3c392db095
         'System\\DatabaseDriver\\pdo_mysql' => __DIR__ . '/../..' . '/App/System/DatabaseDriver/pdo_mysql.php',
         'System\\DatabaseDriver\\pdo_sqlite' => __DIR__ . '/../..' . '/App/System/DatabaseDriver/pdo_sqlite.php',
         'System\\Http\\Request' => __DIR__ . '/../..' . '/App/System/Http/Request.php',
+        'System\\Http\\Response' => __DIR__ . '/../..' . '/App/System/Http/Response.php',
+        'System\\Http\\Route' => __DIR__ . '/../..' . '/App/System/Http/Route.php',
         'System\\Interfaces\\Jsonable' => __DIR__ . '/../..' . '/App/System/Interfaces/Jsonable.php',
         'System\\Model' => __DIR__ . '/../..' . '/App/System/Model.php',
         'System\\Utility\\Exception' => __DIR__ . '/../..' . '/App/System/Utility/Exception.php',

@@ -7,8 +7,9 @@ use Model\Demo;
 
 class apiController extends Controller {
 
-    public function test($id){
-        
+    public function testGet($id){
+        header("X-Powered-By: PHP-QuickORM");
+        return $this->response()->json(Demo::find($id));
     }
 
     // ORM 查询类方法演示
@@ -19,53 +20,53 @@ class apiController extends Controller {
         dd($resultObject);
     }
 
-    public function where(){
+    public function whereGet(){
         // 条件检索数据表(条件数组)
         $conditionArray = ["author" => "Rytia"];
         $resultObjectArray = Demo::where($conditionArray)->get();
         dd($resultObjectArray);
     }
 
-    public function whereRaw(){
+    public function whereRawGet(){
         // 条件检索数据表(SQL语句)
         $conditionStatement = 'author LIKE "Rytia"';
         $resultObjectArray = Demo::whereRaw($conditionStatement)->get();
         dd($resultObjectArray);
     }
 
-    public function all(){
+    public function allGet(){
         // 显示全部数据
         $resultObjectArray = Demo::all();
         dd($resultObjectArray);
     }
 
-    public function raw(){
+    public function rawGet(){
         // 执行SQL语句
         $sqlStatement = 'SELECT * FROM {table} WHERE author LIKE "Rytia"';
         $resultObjectArray = Demo::raw($sqlStatement)->get();
         dd($resultObjectArray);
     }
 
-    public function search(){
+    public function searchGet(){
         // 数据表字段搜索
         $resultObjectArray = Demo::search("title", "%嗯%");
         dd($resultObjectArray);
     }
 
-    public function orWhere(){
+    public function orWhereGet(){
         // 多重条件检索数据表(条件数组)
         // 支持 where、whereRaw、orWhere、orWhereRaw
         $test = Demo::where(['title' => '还是标题'])->orWhere(['title' => '测试标题'])->get();
         dd($test);
     }
 
-    public function delete($id){
+    public function deleteGet($id){
         // 删除条目
         $result = Demo::find($id)->delete();
         dd($result);
     }
 
-    public function paginate($pageNum){
+    public function paginateGet($pageNum){
         // 条目分页演示
 
         // 直接调用：相当于 Database 层分页，效率高
@@ -82,7 +83,7 @@ class apiController extends Controller {
         dd($test);
     }
 
-    public function databaseWhere(){
+    public function databaseWhereGet(){
         // 数据库层封装演示1
         $result = Database::table('demo')
             ->setModel(Demo::class)
@@ -95,7 +96,7 @@ class apiController extends Controller {
 
     }
 
-    public function databaseOn(){
+    public function databaseOnGet(){
         // 数据库层封装演示2
         $result = Database::table('wiki')
             ->select('DISTINCT zhong.name,wiki.coordinate')
