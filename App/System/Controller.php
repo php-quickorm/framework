@@ -18,7 +18,7 @@ class Controller
         }
     }
 
-    public function request($field){
+    public function request($field = null){
         if(is_null($field)){
             return $this->request;
         } else {

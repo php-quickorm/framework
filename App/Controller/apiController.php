@@ -8,8 +8,8 @@ use Model\Demo;
 class apiController extends Controller {
 
     public function testGet($id){
-        header("X-Powered-By: PHP-QuickORM");
-        return $this->response()->json(Demo::find($id));
+        $data = Demo::find($id);
+        return $this->response();
     }
 
     // ORM 查询类方法演示
@@ -105,6 +105,36 @@ class apiController extends Controller {
             ->orderBy("coordinate", "DESC")
             ->fetchAll();
         dd($result);
+
+    }
+
+    public function responseDemoGet($id){
+        // 响应演示
+
+        $data = Demo::find($id);
+
+        // 直接返回 JSON
+        $this->response()->json($data, '200');
+
+        // 返回请求标准 JSON 对象
+        $this->response()->dataEncode($data, '200', '0', '');
+
+        // 返回请求标准 JSON 对象
+        $this->response($data, '200', '0', '');
+
+        // 标准 JSON 对象示例
+        //    {
+        //      "errcode": "0",
+        //      "errmsg": "",
+        //      "data": {
+        //          "id": "2",
+        //          "title": "还是标题",
+        //          "content": "这是无敌的测试",
+        //          "author": "Rytia",
+        //          "created_at": "0000-00-00 00:00:00",
+        //          "updated_at": "0000-00-00 00:00:00"
+        //      }
+        //    }
 
     }
 }

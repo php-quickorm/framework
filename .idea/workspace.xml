@@ -4,18 +4,11 @@
     <bookmark url="file://$PROJECT_DIR$/App/System/Collection.php" line="245" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d14109e8-dd4c-4f2d-8db3-442e006f2a64" name="Default" comment="完善 Request 方法">
-      <change afterPath="$PROJECT_DIR$/App/System/Http/Route.php" afterDir="false" />
+    <list default="true" id="d14109e8-dd4c-4f2d-8db3-442e006f2a64" name="Default" comment="完善 路由系统">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/Controller/apiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/Controller/apiController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/System/Controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/System/Controller.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/System/Http/Request.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/System/Http/Request.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App/System/Http/Response.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/System/Http/Response.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App/System/Interfaces/Jsonable.php" beforeDir="false" afterPath="$PROJECT_DIR$/App/System/Interfaces/Jsonable.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Public/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/Public/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_classmap.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_classmap.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_static.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_static.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -60,22 +53,22 @@
           <entry key="project.open.time.16" value="1" />
           <entry key="project.open.time.7" value="2" />
           <entry key="project.open.time.8" value="4" />
-          <entry key="project.open.time.9" value="6" />
-          <entry key="project.opened" value="26" />
+          <entry key="project.open.time.9" value="7" />
+          <entry key="project.opened" value="27" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="gitignore" value="5" />
           <entry key="json" value="6" />
-          <entry key="php" value="546" />
+          <entry key="php" value="587" />
           <entry key="sql" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="JSON" value="6" />
-          <entry key="PHP" value="546" />
+          <entry key="PHP" value="587" />
           <entry key="PLAIN_TEXT" value="5" />
           <entry key="Scratch" value="2" />
         </counts>
@@ -84,17 +77,17 @@
         <counts>
           <entry key="dummy" value="27" />
           <entry key="json" value="54" />
-          <entry key="php" value="27168" />
+          <entry key="php" value="28457" />
           <entry key="sql" value="7" />
-          <entry key="txt" value="297" />
+          <entry key="txt" value="318" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="HTML" value="3" />
           <entry key="JSON" value="54" />
-          <entry key="PHP" value="27165" />
-          <entry key="PLAIN_TEXT" value="324" />
+          <entry key="PHP" value="28454" />
+          <entry key="PLAIN_TEXT" value="345" />
           <entry key="Scratch" value="7" />
         </counts>
       </usages-collector>
@@ -109,10 +102,13 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/App/System/Http/Response.php">
+        <entry file="file://$PROJECT_DIR$/App/Controller/apiController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-163">
-              <caret line="7" column="3" lean-forward="true" selection-start-line="7" selection-start-column="3" selection-end-line="7" selection-end-column="3" />
+            <state relative-caret-position="286">
+              <caret line="11" column="31" selection-start-line="11" selection-start-column="31" selection-end-line="11" selection-end-column="31" />
+              <folding>
+                <element signature="e#28#50#0#PHP" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -184,12 +180,12 @@
         <option value="$PROJECT_DIR$/App/System/Http/Input.php" />
         <option value="$PROJECT_DIR$/Public/index.php" />
         <option value="$PROJECT_DIR$/index.php" />
-        <option value="$PROJECT_DIR$/App/System/Controller.php" />
         <option value="$PROJECT_DIR$/App/System/Interfaces/Jsonable.php" />
-        <option value="$PROJECT_DIR$/App/Controller/apiController.php" />
         <option value="$PROJECT_DIR$/App/System/Http/Route.php" />
-        <option value="$PROJECT_DIR$/App/System/Http/Response.php" />
         <option value="$PROJECT_DIR$/App/System/Http/Request.php" />
+        <option value="$PROJECT_DIR$/App/System/Http/Response.php" />
+        <option value="$PROJECT_DIR$/App/System/Controller.php" />
+        <option value="$PROJECT_DIR$/App/Controller/apiController.php" />
       </list>
     </option>
   </component>
@@ -216,6 +212,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -270,13 +267,19 @@
             <path>
               <item name="ORM" type="b2602c69:ProjectViewProjectNode" />
               <item name="ORM" type="462c0819:PsiDirectoryNode" />
+              <item name="App" type="462c0819:PsiDirectoryNode" />
+              <item name="System" type="462c0819:PsiDirectoryNode" />
+              <item name="Utility" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ORM" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ORM" type="462c0819:PsiDirectoryNode" />
               <item name="Public" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -367,7 +370,8 @@
       <workItem from="1534745218195" duration="5763000" />
       <workItem from="1534837717177" duration="4334000" />
       <workItem from="1534928421170" duration="9596000" />
-      <workItem from="1535014547032" duration="13975000" />
+      <workItem from="1535014547032" duration="18451000" />
+      <workItem from="1535099305073" duration="1985000" />
     </task>
     <task id="LOCAL-00001" summary="完善 多级路由">
       <created>1533568404426</created>
@@ -503,11 +507,18 @@
       <option name="project" value="LOCAL" />
       <updated>1535014686745</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="完善 路由系统">
+      <created>1535039767908</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1535039767908</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="234222000" />
+    <option name="totallyTimeSpent" value="240683000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -594,7 +605,8 @@
     <MESSAGE value="新增 HTTP 类划分" />
     <MESSAGE value="新增 Request 方法头" />
     <MESSAGE value="完善 Request 方法" />
-    <option name="LAST_COMMIT_MESSAGE" value="完善 Request 方法" />
+    <MESSAGE value="完善 路由系统" />
+    <option name="LAST_COMMIT_MESSAGE" value="完善 路由系统" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/vendor/autoload.php">
@@ -682,9 +694,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="650">
           <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
-          <folding>
-            <element signature="e#46#69#0#PHP" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -701,9 +710,6 @@
           <caret line="12" column="33" lean-forward="true" selection-start-line="12" selection-start-column="33" selection-end-line="12" selection-end-column="33" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/System/Http/Session.php">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/App/System/DatabaseDriver/pdo_sqlite.php">
       <provider selected="true" editor-type-id="text-editor">
@@ -722,16 +728,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/App/Controller/apiController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="10" column="42" selection-start-line="10" selection-start-column="42" selection-end-line="10" selection-end-column="42" />
-          <folding>
-            <element signature="e#28#50#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/App/System/DatabaseDriver/pdo_mysql.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="390">
@@ -739,34 +735,44 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/App/System/Http/Session.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/App/System/Http/Route.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="104">
           <caret line="4" selection-start-line="4" selection-end-line="8" selection-end-column="3" />
-          <folding>
-            <element signature="e#29#49#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/System/Controller.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="416">
-          <caret line="16" column="41" selection-start-line="16" selection-start-column="41" selection-end-line="16" selection-end-column="41" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/System/Http/Request.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1768">
-          <caret line="68" column="26" selection-start-line="68" selection-start-column="26" selection-end-line="68" selection-end-column="26" />
+        <state relative-caret-position="-308">
+          <caret line="12" column="25" lean-forward="true" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/System/Controller.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="20" column="42" selection-start-line="20" selection-start-column="42" selection-end-line="20" selection-end-column="42" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/System/Http/Response.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-163">
-          <caret line="7" column="3" lean-forward="true" selection-start-line="7" selection-start-column="3" selection-end-line="7" selection-end-column="3" />
+        <state relative-caret-position="811">
+          <caret line="47" column="21" selection-start-line="47" selection-start-column="21" selection-end-line="47" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/Controller/apiController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="11" column="31" selection-start-line="11" selection-start-column="31" selection-end-line="11" selection-end-column="31" />
+          <folding>
+            <element signature="e#28#50#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
