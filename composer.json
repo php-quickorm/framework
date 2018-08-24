@@ -1,7 +1,6 @@
 {
-    "name": "zzfly256/PHP-QuickORM",
+    "name": "zzfly256/php-quickorm",
     "description": "a simple PHP ORM framework",
-    "type": "library",
     "license": "MIT",
     "authors": [
         {
@@ -9,7 +8,9 @@
             "email": "admin@zzfly.net"
         }
     ],
-    "require": {},
+    "require": {
+        "php": ">=7.0"
+    },
     "autoload": {
         "psr-4": {
             "Model\\": "App/Model/",
