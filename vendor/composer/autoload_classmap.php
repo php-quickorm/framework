@@ -6,15 +6,15 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'System\\Collection' => $baseDir . '/App/System/Collection.php',
-    'System\\Controller' => $baseDir . '/App/System/Controller.php',
-    'System\\Database' => $baseDir . '/App/System/Database.php',
-    'System\\DatabaseDriver\\pdo_mysql' => $baseDir . '/App/System/DatabaseDriver/pdo_mysql.php',
-    'System\\DatabaseDriver\\pdo_sqlite' => $baseDir . '/App/System/DatabaseDriver/pdo_sqlite.php',
-    'System\\Http\\Request' => $baseDir . '/App/System/Http/Request.php',
-    'System\\Http\\Response' => $baseDir . '/App/System/Http/Response.php',
-    'System\\Http\\Route' => $baseDir . '/App/System/Http/Route.php',
-    'System\\Interfaces\\Jsonable' => $baseDir . '/App/System/Interfaces/Jsonable.php',
-    'System\\Model' => $baseDir . '/App/System/Model.php',
-    'System\\Utility\\Exception' => $baseDir . '/App/System/Utility/Exception.php',
+    'System\\Collection' => $baseDir . '/System/Collection.php',
+    'System\\Controller' => $baseDir . '/System/Controller.php',
+    'System\\Database' => $baseDir . '/System/Database.php',
+    'System\\DatabaseDriver\\pdo_mysql' => $baseDir . '/System/DatabaseDriver/pdo_mysql.php',
+    'System\\DatabaseDriver\\pdo_sqlite' => $baseDir . '/System/DatabaseDriver/pdo_sqlite.php',
+    'System\\Http\\Request' => $baseDir . '/System/Http/Request.php',
+    'System\\Http\\Response' => $baseDir . '/System/Http/Response.php',
+    'System\\Http\\Route' => $baseDir . '/System/Http/Route.php',
+    'System\\Interfaces\\Jsonable' => $baseDir . '/System/Interfaces/Jsonable.php',
+    'System\\Model' => $baseDir . '/System/Model.php',
+    'System\\Utility\\Exception' => $baseDir . '/System/Utility/Exception.php',
 );

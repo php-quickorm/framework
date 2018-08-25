@@ -65,7 +65,7 @@ Class Response
      * @param int $errcode
      * @param string $errmsg
      */
-    public function dataEncode($data, $statusCode, $errcode = 0, $errmsg = ''){
+    public function dataEncode($data, $statusCode = 200, $errcode = 0, $errmsg = ''){
         // 同理，如果实现了 Jsonable 则先反转，这里是的简化版
         $data = ($data instanceof Jsonable) ? json_decode($data) : $data;
 
@@ -77,6 +77,32 @@ Class Response
         ];
         $this->json($result,$statusCode);
     }
+
+    /**
+     * 将 Collection 集合以标准 JSON 对象返回并附带分页信息
+     * @param $data
+     * @param $statusCode
+     * @param int $errcode
+     * @param string $errmsg
+     */
+    public function pageEncode($data, $statusCode = 200, $errcode = 0, $errmsg = ''){
+
+        // 判断是否可分页（Collection对象）
+        if(!isset($data->collectionPages) || empty($data->collectionPages)){
+            trigger_error("data isn't the instance of Paginate", E_USER_ERROR);
+        }
+
+        // 将 Collection 自身的 collectionPages 合并到对象并返回
+        $result = [
+            'errcode'   =>  $errcode,
+            'errmsg'    =>  $errmsg,
+            'data'      =>  json_decode($data),
+            'page'      =>  $data->collectionPages
+        ];
+
+        $this->json($result,$statusCode);
+    }
+
 
     /**
      * 响应头部设置

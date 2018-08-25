@@ -81,7 +81,7 @@ class Model implements Jsonable
      * @return Database
      */
     public static function raw($sqlStatement){
-        return Database::model(static::class)->query($sqlStatement,[":table"=> static::$table]);
+        return Database::model(static::class)->query(str_replace("{table}", static::$table,$sqlStatement));
     }
 
     /**
