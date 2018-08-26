@@ -1,5 +1,5 @@
 {
-    "name": "zzfly256/php-quickorm",
+    "name": "php-quickorm/framework",
     "description": "A light PHP framework for building API server (not only ORM, but a fully framework)",
     "keywords": ["framework", "restful api", "orm"],
     "license": "MIT",
