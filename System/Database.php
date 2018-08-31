@@ -128,19 +128,26 @@ class Database{
 
     /**
      * 开始一个新的事务
-     * @uses 用于 Model->update(), Model->delete(), Model->save() 等操作的准备工作
+     * @return boolean
      */
     public function beginTransaction() {
-        $this->PDOConnect->beginTransaction();
+        return $this->PDOConnect->beginTransaction();
     }
 
     /**
      * 提交事务
      * @return boolean
-     * @uses 用于 Model->update(), Model->delete(), Model->save() 等操作使 SQL 生效
      */
     public function commit() {
         return $this->PDOConnect->commit();
+    }
+
+    /**
+     * 回滚事务
+     * @return boolean
+     */
+    public function rollBack() {
+        return $this->PDOConnect->rollBack();
     }
 
 

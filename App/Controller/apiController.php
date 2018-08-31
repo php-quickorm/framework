@@ -8,8 +8,18 @@ use Model\Demo;
 class apiController extends Controller {
 
     public function testGet($id){
-        $data = Demo::find($id);
-        return $this->response($data);
+        $table = "demo";
+        $database = new Database($table);
+
+        $database->beginTransaction();
+        $database->where([ "id" => 1])->update([ "author" => $id ]);
+        if($id ==1 ){
+            sleep(10);
+        }
+
+        dump($database->commit());
+
+        dd(Demo::find(1));
     }
 
     // ORM 查询类方法演示
@@ -141,5 +151,23 @@ class apiController extends Controller {
         //      }
         //    }
 
+    }
+
+    public function transactionGet($id){
+        // 事物演示，以第一行的数据作为例子（并没使用异常捕获并回滚）
+        $table = "demo";
+        $database = new Database($table);
+        //开始事物
+        $database->beginTransaction();
+        $database->where([ "id" => 1])->update([ "author" => $id ]);
+
+        // 如果请求的 id 是 1，则等待 10 秒
+        // 在这 10 秒内，可以试着用不同的 id 进行访问，结果： id 为 1 的请求在 10 秒后完成，其余请求亦是在 id 为 1 的请求完成后全部完成，可见事物起作用了（因为其他请求被阻塞了呀！事物操作具有原子性和隔离性，并常用于保持数据的一致）
+        if($id ==1 ){
+            sleep(10);
+        }
+        
+        dump($database->commit());
+        dd(Demo::find(1));
     }
 }
