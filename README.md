@@ -1,6 +1,6 @@
 # PHP QuickORM 框架开发文档
 
-版本：20180828
+版本：20180905
 
 ## 简介
 
@@ -23,4 +23,4 @@ PHP QuickORM 框架（[php-quickorm/framework](https://github.com/php-quickorm/f
 如果您喜欢 PHP QuickORM 框架，请移步 Github 给我们一个 Star :)
 
 ---
-具体的安装事项与开发文档，请移步 [php-quickorm/framework](https://github.com/php-quickorm/documents)
+具体的安装事项与开发文档，请移步 [php-quickorm/documents](https://github.com/php-quickorm/documents)

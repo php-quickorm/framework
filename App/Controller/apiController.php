@@ -8,18 +8,8 @@ use Model\Demo;
 class apiController extends Controller {
 
     public function testGet($id){
-        $table = "demo";
-        $database = new Database($table);
+        dump($this->request->getMethod());
 
-        $database->beginTransaction();
-        $database->where([ "id" => 1])->update([ "author" => $id ]);
-        if($id ==1 ){
-            sleep(10);
-        }
-
-        dump($database->commit());
-
-        dd(Demo::find(1));
     }
 
     // ORM 查询类方法演示
@@ -166,7 +156,7 @@ class apiController extends Controller {
         if($id ==1 ){
             sleep(10);
         }
-        
+
         dump($database->commit());
         dd(Demo::find(1));
     }
