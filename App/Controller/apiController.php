@@ -7,9 +7,12 @@ use Model\Demo;
 
 class apiController extends Controller {
 
-    public function testGet($id){
-        dump($this->request->getMethod());
+    public function testGet(){
+        $demo = new Demo();
+        $demo->abc = 1;
+        $demo->acb = 1;
 
+        return $this->response($demo);
     }
 
     // ORM 查询类方法演示

@@ -49,7 +49,8 @@ class Model implements Jsonable
 
     /**
      * 数据表字段检索
-     * @param string $field, string $string
+     * @param string $field
+     * @param string $string
      * @return Collection
      */
     public static function search($field,$string){
@@ -86,7 +87,8 @@ class Model implements Jsonable
 
     /**
      * Model 分页
-     * @param int $pageNum, boolean $furtherPageInfo
+     * @param int $pageNum
+     * @param boolean $furtherPageInfo
      * @return Collection
      * @uses Model 集合分页功能
      */
@@ -187,16 +189,41 @@ class Model implements Jsonable
 
     public function __set($name, $value) {
         // $demo->property = "text";
-        return $this->objectData[$name] = $value;
+
+        // 通过反射判断是否已经预定义修饰器
+        try {
+            $modelClass = new \ReflectionClass(static::class);
+            if ($modelClass->hasMethod("set".ucfirst($name))){
+                $methodName = "set".ucfirst($name);
+                $value = $this->$methodName($value);
+            }
+        } catch (\ReflectionException $e) {
+            // do nothing..
+        } finally {
+            return $this->objectData[$name] = $value;
+        }
     }
 
     public function __get($name) {
         // echo $demo->property
-	    if (isset($this->objectData[$name])){
-	        return $this->objectData[$name];
-        } else {
-	        return null;
+
+        // 通过反射判断是否已经预定义访问器
+        try {
+            $modelClass = new \ReflectionClass(static::class);
+            if ($modelClass->hasMethod("get".ucfirst($name))){
+                $methodName = "get".ucfirst($name);
+                return $this->$methodName();
+            }
+        } catch (\ReflectionException $e) {
+            // do nothing..
+        } finally {
+            if (isset($this->objectData[$name])){
+                return $this->objectData[$name];
+            } else {
+                return null;
+            }
         }
+
     }
 
     public function __isset($name) {
@@ -228,6 +255,7 @@ class Model implements Jsonable
 
     /**
      * 将实例转换为 JSON 字符串
+     * @param $option
      * @return string
      */
     public function toJson($option = 0) {
