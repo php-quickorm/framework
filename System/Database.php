@@ -86,7 +86,8 @@ class Database{
 
     /**
      * SQL 语句预处理并执行
-     * @param string $sqlStatement, array $parameters
+     * @param string $sqlStatement
+     * @param array $parameters
      * @return boolean
      * @uses 用于预处理并执行语句，请注意本方法结合了 pdo 中 prepare 和 execute 两个方法
      */
@@ -194,9 +195,9 @@ class Database{
                 // 传入条件，进行 SQL 语句拼接
                 foreach ($sqlConditionArray as $key => $value) {
                     if (isset($whereSQL)) {
-                        $whereSQL .= " AND ".$key.'="'.$value.'"';
+                        $whereSQL .= " AND ".$key.'="'.addslashes($value).'"';
                     } else {
-                        $whereSQL = $key.'="'.$value.'"';
+                        $whereSQL = $key.'="'.addslashes($value).'"';
                     }
                 }
                 $this->where = '('.$whereSQL.')';
@@ -212,9 +213,9 @@ class Database{
                 // 传入条件，进行 SQL 语句拼接
                 foreach ($sqlConditionArray as $key => $value) {
                     if (isset($whereSQL)) {
-                        $whereSQL .= " AND ".$key.'="'.$value.'"';
+                        $whereSQL .= " AND ".$key.'="'.addslashes($value).'"';
                     } else {
-                        $whereSQL = $key.'="'.$value.'"';
+                        $whereSQL = $key.'="'.addslashes($value).'"';
                     }
                 }
                 $this->where .= ' AND ('.$whereSQL.')';
@@ -274,9 +275,9 @@ class Database{
             // 传入条件，进行 SQL 语句拼接
             foreach ($sqlConditionArray as $key => $value) {
                 if (isset($whereSQL)) {
-                    $whereSQL .= " AND ".$key.'="'.$value.'"';
+                    $whereSQL .= " AND ".$key.'="'.addslashes($value).'"';
                 } else {
-                    $whereSQL = $key.'="'.$value.'"';
+                    $whereSQL = $key.'="'.addslashes($value).'"';
                 }
             }
             $this->where .= ' OR ('.$whereSQL.')';
@@ -306,7 +307,8 @@ class Database{
 
     /**
      * join 语句
-     * @param string $table, string $method = inner
+     * @param string $table, string
+     * @param$method = inner
      * @return Database
      * @uses 用于根据两个或多个表中的列之间的关系查询数据。其中 method 可选 left, right, full, inner
      */
@@ -340,7 +342,8 @@ class Database{
 
     /**
      * 根据字段排列结果集
-     * @param string|array $field, string $method
+     * @param string|array $field
+     * @param string $method
      * @return Database
      * @uses 根据字段排列结果集, 其中 $field 可为单个字段字符串或关联数组
      */
@@ -422,9 +425,15 @@ class Database{
         return $this->prepare($this->SQLStatement);
     }
 
+    public function count(){
+        $countSQL = str_replace($select, 'COUNT('.$select.')', $this->SQLStatement);
+        return $this->PDOConnect->query($countSQL)->fetch()[0];
+    }
+
     /**
      * Database 分页
-     * @param int $pageNum, boolean $furtherPageInfo
+     * @param int $pageNum
+     * @param boolean $furtherPageInfo
      * @return Collection
      * @uses 数据库 LIMIT 语句调用
      */

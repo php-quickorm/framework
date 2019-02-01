@@ -1,4 +1,11 @@
 <?php
+if (php_sapi_name() == "cli"){
+    echo "Welcome to PHP QuickORM Framework ..\n";
+    echo "Starting development server at Port: 8000\n";
+    exec("php -S 0.0.0.0:8000");
+    die();
+}
+
 require __DIR__.'/vendor/autoload.php';
 use \System\Http\Route;
 use \System\Http\Request;

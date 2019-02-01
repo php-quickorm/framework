@@ -30,7 +30,7 @@ class Model implements Jsonable
      */
 	public static function find($id){
         $db = new Database(static::$table);
-        if($result = $db->where([ 'id' => $id])->fetch()){
+        if($result = $db->where([ 'id' => intval($id)])->fetch()){
             return new static($result);
         } else {
             return null;

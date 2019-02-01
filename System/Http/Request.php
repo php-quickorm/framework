@@ -10,8 +10,7 @@ Class Request
     protected $method;
     protected $url;
     protected $path;
-    protected $postArray;
-    protected $getArray;
+    protected $requestArray;
 
 
     /**
@@ -22,8 +21,12 @@ Class Request
         $this->method = strtolower($_SERVER['REQUEST_METHOD']);
         $this->path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $this->url = $_SERVER["REQUEST_URI"];
-        $this->postArray = $_POST;
-        $this->getArray = $_GET;
+        $this->requestArray = $_REQUEST;
+        if(!in_array($this->method,['post','get'])){
+            parse_str(file_get_contents('php://input'), $_OTHER);
+            $this->requestArray = array_merge($this->requestArray,$_OTHER);
+        }
+
     }
 
 
@@ -32,7 +35,7 @@ Class Request
      * @return array
      */
     public function all(){
-        return array_merge($this->postArray, $this->getArray);
+        return $this->requestArray;
     }
 
     /**
@@ -49,12 +52,8 @@ Class Request
                 $resultArray[] = $this->get($value);
                 return $resultArray;
             }
-        } else if(array_key_exists($field,$this->postArray)) {
-            // POST 取值
-            return $this->postArray[$field];
-        } elseif(array_key_exists($field,$this->getArray)) {
-            // GET 取值
-            return $this->getArray[$field];
+        } else if(array_key_exists($field,$this->requestArray)) {
+            return $this->requestArray[$field];
         } else {
             // 键值不存在
             return null;

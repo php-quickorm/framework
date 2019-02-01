@@ -7,12 +7,8 @@ use Model\Demo;
 
 class apiController extends Controller {
 
-    public function testGet(){
-        $demo = new Demo();
-        $demo->abc = 1;
-        $demo->acb = 1;
-
-        return $this->response($demo);
+    public function testDelete(){
+        return $this->response($this->request->get('name'));
     }
 
     // ORM 查询类方法演示

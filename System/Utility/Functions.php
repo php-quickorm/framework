@@ -8,36 +8,29 @@
 // 调试封装
 if(!function_exists('dump')){
     /**
-     * @param $toDo
+     * @param $param
      * @uses 打印变量
      */
-    function dump($toDo){
+    function dump($param){
         echo "<pre>";
-        if (is_array($toDo)) {
-            print_r($toDo);
-        } elseif (is_object($toDo)) {
-            print_r($toDo);
+        if (is_array($param)) {
+            print_r($param);
+        } elseif (is_object($param)) {
+            print_r($param);
         } else {
-            var_dump($toDo);
+            var_dump($param);
         }
     }
 }
 
 if(!function_exists('dd')){
     /**
-     * @param $toDo
+     * @param $param
      * @uses 打印变量并停止运行
      */
-    function dd($toDo){
+    function dd($param){
         echo "<pre>";
-        if (is_array($toDo)) {
-            print_r($toDo);
-        } elseif (is_object($toDo)) {
-
-            print_r($toDo);
-        } else {
-            var_dump($toDo);
-        }
+        dump($param);
         die();
     }
 }
