@@ -13,10 +13,6 @@
         "php": ">=7.0"
     },
     "autoload": {
-        "psr-4": {
-            "Model\\": "App/Model/",
-            "Controller\\": "App/Controller/"
-        },
         "classmap": [
             "System"
         ]
